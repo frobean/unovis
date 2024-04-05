@@ -1,5 +1,6 @@
 export * from './containers'
 export * from './components'
+export { createCustomEmotion } from './emotion/css'
 export * from './types'
 export * from './styles/colors'
 export * from './styles/sizes'

@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: donut-component;
 `
 
-export const variables = injectGlobal`
-  :root {
+export const initStyles = (): void => injectGlobal`
+  :root,:host {
     --vis-donut-central-label-font-size: 16px;
     --vis-donut-central-label-text-color: #5b5f6d;
     // Undefined by default to allow proper fallback to var(--vis-font-family)
@@ -29,28 +29,28 @@ export const variables = injectGlobal`
     --vis-dark-donut-background-color: #18160C;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-donut-central-label-text-color: var(--vis-dark-donut-central-label-text-color);
     --vis-donut-central-sub-label-text-color: var(--vis-dark-donut-central-sub-label-text-color);
     --vis-donut-background-color: var(--vis-dark-donut-background-color);
   }
 `
-export const background = css`
+export const background = (): string => css`
   label: background;
   fill: var(--vis-donut-background-color);
 `
 
-export const segment = css`
+export const segment = (): string => css`
   label: segment;
   stroke-width: var(--vis-donut-segment-stroke-width);
   stroke: var(--vis-donut-segment-stroke-color, var(--vis-donut-background-color));
 `
 
-export const segmentExit = css`
+export const segmentExit = (): string => css`
   label: segment-exit;
 `
 
-export const centralLabel = css`
+export const centralLabel = (): string => css`
   label: central-label;
   text-anchor: middle;
   dominant-baseline: middle;
@@ -60,7 +60,7 @@ export const centralLabel = css`
   fill: var(--vis-donut-central-label-text-color);
 `
 
-export const centralSubLabel = css`
+export const centralSubLabel = (): string => css`
   label: central-label;
   text-anchor: middle;
   dominant-baseline: middle;

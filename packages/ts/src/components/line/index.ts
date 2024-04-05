@@ -33,7 +33,7 @@ export class Line<Datum> extends XYComponentCore<Datum, LineConfigInterface<Datu
   lineGen: LineGenInterface<{ x: number; y: number; defined: boolean }>
   curve: CurveFactoryLineOnly = Curve[CurveType.MonotoneX]
   events = {
-    [Line.selectors.line]: {
+    [Line.selectors.line()]: {
       mouseover: this._highlight.bind(this),
       mouseleave: this._resetHighlight.bind(this),
     },
@@ -105,30 +105,30 @@ export class Line<Datum> extends XYComponentCore<Datum, LineConfigInterface<Datu
     })
 
     const lines = this.g
-      .selectAll<SVGGElement, LineData>(`.${s.line}`)
+      .selectAll<SVGGElement, LineData>(`.${s.line()}`)
       .data(lineData)
 
     const linesEnter = lines.enter().append('g')
-      .attr('class', s.line)
+      .attr('class', s.line())
 
     linesEnter
       .append('path')
-      .attr('class', s.linePath)
+      .attr('class', s.linePath())
       .attr('stroke', (d, i) => getColor(data, config.color, i))
       .attr('stroke-opacity', 0)
       .attr('stroke-width', config.lineWidth)
 
     linesEnter
       .append('path')
-      .attr('class', s.lineSelectionHelper)
+      .attr('class', s.lineSelectionHelper())
       .attr('d', this._emptyPath())
 
     const linesMerged = linesEnter.merge(lines)
     linesMerged.style('cursor', (d, i) => getString(data, config.cursor, i))
     linesMerged.each((d, i, elements) => {
       const group = select(elements[i])
-      const linePath = group.select<SVGPathElement>(`.${s.linePath}`)
-      const lineSelectionHelper = group.select(`.${s.lineSelectionHelper}`)
+      const linePath = group.select<SVGPathElement>(`.${s.linePath()}`)
+      const lineSelectionHelper = group.select(`.${s.lineSelectionHelper()}`)
 
       const isLineVisible = d.visible
       const dashArray = getValue<Datum[], number[]>(data, config.lineDashArray, i)
@@ -171,8 +171,8 @@ export class Line<Datum> extends XYComponentCore<Datum, LineConfigInterface<Datu
 
     if (config.highlightOnHover) {
       this.g
-        .selectAll(`.${s.line}`)
-        .classed(s.dim, d => d !== datum)
+        .selectAll(`.${s.line()}`)
+        .classed(s.dim(), d => d !== datum)
     }
   }
 
@@ -181,8 +181,8 @@ export class Line<Datum> extends XYComponentCore<Datum, LineConfigInterface<Datu
 
     if (config.highlightOnHover) {
       this.g
-        .selectAll(`.${s.line}`)
-        .classed(s.dim, false)
+        .selectAll(`.${s.line()}`)
+        .classed(s.dim(), false)
     }
   }
 }

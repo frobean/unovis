@@ -1,10 +1,10 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: chord-diagram-component;
 `
 
-export const variables = injectGlobal`
+addInitFunction((): void => injectGlobal`
   :root {
     --vis-chord-diagram-link-fill-color: #cad5f6;
     --vis-chord-diagram-link-stroke-color: #777777;
@@ -23,28 +23,28 @@ export const variables = injectGlobal`
     --vis-dark-chord-diagram-link-fill-color: #575c65;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-chord-diagram-link-fill-color: var(--vis-dark-chord-diagram-link-fill-color);
   }
-`
+`)
 
-export const background = css`
+export const background = (): string => css`
   label: background;
 `
 
-export const nodes = css`
+export const nodes = (): string => css`
   label: nodes;
 `
 
-export const links = css`
+export const links = (): string => css`
   label: links;
 `
 
-export const labels = css`
+export const labels = (): string => css`
   label: labels;
 `
 
-export const node = css`
+export const node = (): string => css`
   label: node;
   stroke-width: 0;
   fill: var(--vis-color-main);
@@ -52,17 +52,17 @@ export const node = css`
   transition: .1s fill-opacity;
 `
 
-export const highlightedNode = css`
+export const highlightedNode = (): string => css`
   label: highlighted;
   fill-opacity: var(--vis-chord-diagram-node-highlighted-opacity);
   stroke-width: 1.5;
 `
 
-export const label = css`
+export const label = (): string => css`
   label: label;
 `
 
-export const labelText = css`
+export const labelText = (): string => css`
   label: label-text;
 
   dominant-baseline: middle;
@@ -74,11 +74,11 @@ export const labelText = css`
   }
 `
 
-export const labelExit = css`
+export const labelExit = (): string => css`
   label: label-exit;
 `
 
-export const link = css`
+export const link = (): string => css`
   label: link;
 
   fill: var(--vis-chord-diagram-link-fill-color);
@@ -87,19 +87,19 @@ export const link = css`
   stroke-opacity:  var(--vis-chord-diagram-link-stroke-opacity);
   transition: .1s fill-opacity;
 `
-export const highlightedLink = css`
+export const highlightedLink = (): string => css`
   label: highlighted;
   fill-opacity: var(--vis-chord-diagram-link-highlighted-opacity);
 `
 
-export const transparent = css`
+export const transparent = (): string => css`
   label: transparent;
 
-  ${`.${link}`}:not(${`.${highlightedLink}`}) {
+  ${`.${link()}`}:not(${`.${highlightedLink()}`}) {
     fill-opacity: var(--vis-chord-diagram-link-dimmed-opacity);
   }
 
-  ${`.${node}`}:not(${`.${highlightedNode}`}) {
+  ${`.${node()}`}:not(${`.${highlightedNode()}`}) {
     fill-opacity: var(--vis-chord-diagram-node-dimmed-opacity);
   }
 `

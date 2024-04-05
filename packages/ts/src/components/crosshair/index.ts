@@ -64,7 +64,7 @@ export class Crosshair<Datum> extends XYComponentCore<Datum, CrosshairConfigInte
 
     this.g.style('opacity', this.show ? 1 : 0)
     this.line = this.g.append('line')
-      .attr('class', s.line)
+      .attr('class', s.line())
   }
 
   setContainer (containerSvg: Selection<SVGSVGElement, unknown, SVGSVGElement, unknown>): void {
@@ -97,7 +97,7 @@ export class Crosshair<Datum> extends XYComponentCore<Datum, CrosshairConfigInte
 
     const circlesEnter = circles.enter()
       .append('circle')
-      .attr('class', s.circle)
+      .attr('class', s.circle())
       .attr('r', 0)
       .attr('cx', this.x)
       .attr('cy', d => d.y)

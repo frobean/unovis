@@ -31,7 +31,7 @@ export class Tooltip {
   constructor (config: TooltipConfigInterface = {}) {
     this.element = document.createElement('div')
     this.div = select(this.element)
-      .attr('class', s.tooltip)
+      .attr('class', s.tooltip())
 
     this.setConfig(config)
     this.components = this.config.components
@@ -84,19 +84,19 @@ export class Tooltip {
     }
 
     this.div
-      .classed(s.hidden, false)
-      .classed(s.show, true)
+      .classed(s.hidden(), false)
+      .classed(s.show(), true)
 
     this._isShown = true
     this.place(pos)
   }
 
   public hide (): void {
-    this.div.classed(s.show, false)
+    this.div.classed(s.show(), false)
       .on('transitionend', () => {
         // We hide the element once the transition completes
         // This ensures container overflow will not occur when the window is resized
-        this.div.classed(s.hidden, !this._isShown)
+        this.div.classed(s.hidden(), !this._isShown)
       })
 
     this._isShown = false
@@ -150,7 +150,7 @@ export class Tooltip {
     const y = containerHeight < height ? height : pos.y + constraintY + dy
 
     this.div
-      .classed(s.positionFixed, isContainerBody)
+      .classed(s.positionFixed(), isContainerBody)
       .style('top', isContainerBody ? `${y - height}px` : 'unset')
       .style('bottom', !isContainerBody ? `${containerHeight - y}px` : 'unset')
       .style('left', `${x}px`)

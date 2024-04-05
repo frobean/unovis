@@ -56,7 +56,7 @@ export interface LinkElement extends SVGPathElement {
 export function createLinks<N extends SankeyInputNode, L extends SankeyInputLink> (
   sel: Selection<SVGGElement, SankeyLink<N, L>, SVGGElement, unknown>
 ): void {
-  sel.append('path').attr('class', s.linkPath)
+  sel.append('path').attr('class', s.linkPath())
     .attr('d', (d: SankeyLink<N, L>, i: number, el: ArrayLike<LinkElement>) => {
       el[i]._animState = {
         x0: d.source.x1,
@@ -67,7 +67,7 @@ export function createLinks<N extends SankeyInputNode, L extends SankeyInputLink
       }
       return linkPath(el[i]._animState)
     })
-  sel.append('path').attr('class', s.linkSelectionHelper)
+  sel.append('path').attr('class', s.linkSelectionHelper())
   sel.style('opacity', 0)
 }
 
@@ -79,7 +79,7 @@ export function updateLinks<N extends SankeyInputNode, L extends SankeyInputLink
   smartTransition(sel, duration)
     .style('opacity', (d: SankeyLink<N, L>) => d._state.greyout ? 0.2 : 1)
 
-  const linkSelection = sel.select<SVGPathElement>(`.${s.linkPath}`)
+  const linkSelection = sel.select<SVGPathElement>(`.${s.linkPath()}`)
     .style('cursor', (d: SankeyLink<N, L>) => getString(d, config.linkCursor))
 
   const selectionTransition = smartTransition(linkSelection, duration)
@@ -125,7 +125,7 @@ export function updateLinks<N extends SankeyInputNode, L extends SankeyInputLink
     }))
   }
 
-  sel.select(`.${s.linkSelectionHelper}`)
+  sel.select(`.${s.linkSelectionHelper()}`)
     .attr('d', (d: SankeyLink<N, L>) => linkPath({
       x0: d.source.x1,
       x1: d.target.x0,

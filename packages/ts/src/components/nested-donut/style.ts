@@ -1,7 +1,7 @@
-import { css } from '@emotion/css'
-
 // Utils
 import { getCssVarNames, injectGlobalCssVariables } from 'utils/style'
+
+import { addInitFunction, css } from '../../emotion/css'
 
 const cssVarDefaults = {
   // Undefined by default to allow proper fallback to var(--vis-font-family)
@@ -33,39 +33,41 @@ const cssVarDefaults = {
   '--vis-dark-nested-donut-central-sublabel-text-color': '#fff',
 }
 
-export const root = css`
+export const root = (): string => css`
   label: nested-donut-component;
 `
 
-export const segmentsGroup = css`
+export const segmentsGroup = (): string => css`
   label: nested-donut-segments-group;
 `
 
 export const variables = getCssVarNames(cssVarDefaults)
-injectGlobalCssVariables(cssVarDefaults, root)
 
-export const background = css`
+addInitFunction((): void => injectGlobalCssVariables(cssVarDefaults, root()))
+
+
+export const background = (): string => css`
   label: background;
   fill: var(--vis-nested-donut-background-color);
   stroke-width: var(--vis-nested-donut-segment-stroke-width);
   stroke: var(--vis-nested-donut-segment-stroke-color);
 `
 
-export const segment = css`
+export const segment = (): string => css`
   label: segment;
- `
+`
 
-export const segmentExit = css`
+export const segmentExit = (): string => css`
   label: segment-exit;
 `
 
-export const segmentArc = css`
+export const segmentArc = (): string => css`
   label: segment-arc;
   stroke-width: var(--vis-nested-donut-segment-stroke-width);
   stroke: var(--vis-nested-donut-segment-stroke-color);
 `
 
-export const segmentLabel = css`
+export const segmentLabel = (): string => css`
   label: segment-label;
   text-anchor: middle;
   dominant-baseline: middle;
@@ -73,7 +75,7 @@ export const segmentLabel = css`
   font-size: var(--vis-nested-donut-segment-label-font-size);
 `
 
-export const centralLabel = css`
+export const centralLabel = (): string => css`
   label: central-label;
   text-anchor: middle;
   dominant-baseline: middle;
@@ -83,7 +85,7 @@ export const centralLabel = css`
   fill: var(--vis-nested-donut-central-label-text-color);
 `
 
-export const centralSubLabel = css`
+export const centralSubLabel = (): string => css`
   label: central-sub-label;
   text-anchor: middle;
   dominant-baseline: middle;

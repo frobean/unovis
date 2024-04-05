@@ -35,7 +35,7 @@ export class Scatter<Datum> extends XYComponentCore<Datum, ScatterConfigInterfac
   public config: ScatterConfigInterface<Datum> = this._defaultConfig
 
   events = {
-    [Scatter.selectors.point]: {
+    [Scatter.selectors.point()]: {
       mouseenter: this._onPointMouseOver.bind(this),
       mouseleave: this._onPointMouseOut.bind(this),
     },
@@ -105,31 +105,31 @@ export class Scatter<Datum> extends XYComponentCore<Datum, ScatterConfigInterfac
 
     // Groups
     const pointGroups = this.g
-      .selectAll<SVGGElement, ScatterPoint<Datum>[]>(`.${s.pointGroup}`)
+      .selectAll<SVGGElement, ScatterPoint<Datum>[]>(`.${s.pointGroup()}`)
       .data(this._pointData)
 
     const pointGroupsEnter = pointGroups
       .enter()
       .append('g')
-      .attr('class', s.pointGroup)
+      .attr('class', s.pointGroup())
 
     const pointGroupsMerged = pointGroupsEnter.merge(pointGroups)
     smartTransition(pointGroupsMerged, duration)
       .style('opacity', 1)
 
-    const pointGroupExit = pointGroups.exit().attr('class', s.pointGroupExit)
+    const pointGroupExit = pointGroups.exit().attr('class', s.pointGroupExit())
     smartTransition(pointGroupExit, duration).style('opacity', 0).remove()
 
     // Points
     const points = pointGroupsMerged
-      .selectAll<SVGGElement, ScatterPoint<Datum>>(`.${s.point}`)
+      .selectAll<SVGGElement, ScatterPoint<Datum>>(`.${s.point()}`)
       .data(
         d => d,
         d => `${getString(d, config.id, d._point.pointIndex) ?? d._point.pointIndex}`
       )
 
     const pointsEnter = points.enter().append('g')
-      .attr('class', s.point)
+      .attr('class', s.point())
     createPoints(pointsEnter, this.xScale, this.yScale)
 
     this._points = pointsEnter.merge(points)

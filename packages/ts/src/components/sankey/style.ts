@@ -1,14 +1,14 @@
-import { css, injectGlobal } from '@emotion/css'
 import { UNOVIS_ICON_FONT_FAMILY_DEFAULT } from 'styles/index'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
 export const SANKEY_ICON_SIZE = 22
 
-export const root = css`
+export const root = (): string => css`
   label: sankey-component;
 `
 
-export const variables = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
      /* Links */
     --vis-sankey-link-cursor: default;
     --vis-sankey-link-color: var(--vis-color-main-light);
@@ -51,7 +51,7 @@ export const variables = injectGlobal`
     --vis-dark-sankey-icon-color: #292b34;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-sankey-node-color: var(--vis-dark-sankey-node-color);
     --vis-sankey-link-color: var(--vis-dark-sankey-link-color);
     --vis-sankey-node-label-color: var(--vis-dark-sankey-node-label-color);
@@ -59,17 +59,17 @@ export const variables = injectGlobal`
     --vis-sankey-node-label-background-stroke-color: var(--vis-dark-sankey-label-background-stroke-color);
     --vis-sankey-icon-color: var(--vis-dark-sankey-icon-color);
   }
-`
+`)
 
-export const links = css`
+export const links = (): string => css`
   label: links;
 `
 
-export const nodes = css`
+export const nodes = (): string => css`
   label: nodes;
 `
 
-export const link = css`
+export const link = (): string => css`
   label: link;
 
   path {
@@ -85,25 +85,25 @@ export const link = css`
   }
 `
 
-export const linkPath = css`
+export const linkPath = (): string => css`
   label: visible;
 `
 
-export const linkSelectionHelper = css`
+export const linkSelectionHelper = (): string => css`
   label: transparent;
   opacity: 0;
 `
 
-export const labelGroup = css`
+export const labelGroup = (): string => css`
   label: label-group;
   cursor: var(--vis-sankey-node-label-cursor);
 `
 
-export const labelTrimmed = css`
+export const labelTrimmed = (): string => css`
   label: label-trimmed;
 `
 
-export const label = css`
+export const label = (): string => css`
   label: label;
   dominant-baseline: hanging;
 
@@ -118,7 +118,7 @@ export const label = css`
   }
 `
 
-export const sublabel = css`
+export const sublabel = (): string => css`
   label: sub-label;
   dominant-baseline: hanging;
 
@@ -132,28 +132,28 @@ export const sublabel = css`
   }
 `
 
-export const labelBackground = css`
+export const labelBackground = (): string => css`
   label: label-background;
   stroke: var(--vis-sankey-node-label-background-stroke-color);
   fill: var(--vis-sankey-node-label-background-fill-color);
   opacity: var(--vis-sankey-node-label-background-opacity);
 `
 
-export const hidden = css`
+export const hidden = (): string => css`
   label: hidden;
   visibility: hidden;
 `
 
-export const forceShow = css`
+export const forceShow = (): string => css`
   label: forceShow;
   visibility: visible;
 `
 
-export const nodeGroup = css`
+export const nodeGroup = (): string => css`
   label: node-group;
 `
 
-export const node = css`
+export const node = (): string => css`
   label: node;
 
   cursor: var(--vis-sankey-node-cursor);
@@ -165,7 +165,7 @@ export const node = css`
   }
 `
 
-export const nodeIcon = css`
+export const nodeIcon = (): string => css`
   label: icon;
 
   font-family: var(--vis-sankey-icon-font-family);
@@ -178,10 +178,10 @@ export const nodeIcon = css`
   pointer-events: none;
 `
 
-export const nodeExit = css`
+export const nodeExit = (): string => css`
   label: node-exit;
 `
 
-export const background = css`
+export const background = (): string => css`
   label: background;
 `

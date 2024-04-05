@@ -42,32 +42,32 @@ export function createLinks<N extends GraphInputNode, L extends GraphInputLink> 
   selection.attr('opacity', 0)
 
   selection.append('path')
-    .attr('class', linkSelectors.linkSupport)
+    .attr('class', linkSelectors.linkSupport())
 
   selection.append('path')
-    .attr('class', linkSelectors.link)
+    .attr('class', linkSelectors.link())
 
   selection.append('path')
-    .attr('class', linkSelectors.linkBand)
+    .attr('class', linkSelectors.linkBand())
 
   selection.append('use')
-    .attr('class', linkSelectors.linkArrow)
+    .attr('class', linkSelectors.linkArrow())
 
   selection.append('g')
-    .attr('class', linkSelectors.flowGroup)
-    .selectAll(`.${linkSelectors.flowCircle}`)
+    .attr('class', linkSelectors.flowGroup())
+    .selectAll(`.${linkSelectors.flowCircle()}`)
     .data(range(0, 6)).enter()
     .append('circle')
-    .attr('class', linkSelectors.flowCircle)
+    .attr('class', linkSelectors.flowCircle())
 
   const linkLabelGroup = selection.append('g')
-    .attr('class', linkSelectors.linkLabelGroup)
+    .attr('class', linkSelectors.linkLabelGroup())
 
   linkLabelGroup.append('rect')
-    .attr('class', linkSelectors.linkLabelBackground)
+    .attr('class', linkSelectors.linkLabelBackground())
 
   linkLabelGroup.append('text')
-    .attr('class', linkSelectors.linkLabelContent)
+    .attr('class', linkSelectors.linkLabelContent())
 }
 
 export function updateSelectedLinks<N extends GraphInputNode, L extends GraphInputLink> (
@@ -77,14 +77,14 @@ export function updateSelectedLinks<N extends GraphInputNode, L extends GraphInp
 ): void {
   const isGreyedOut = (d: GraphLink<N, L>, i: number): boolean => getBoolean(d, config.linkDisabled, i) || d._state.greyout
   selection
-    .classed(linkSelectors.greyedOutLink, (d, i) => isGreyedOut(d, i))
+    .classed(linkSelectors.greyedOutLink(), (d, i) => isGreyedOut(d, i))
 
   selection.each((d, i, elements) => {
     const element = elements[i]
     const group = select(element)
-    group.select(`.${linkSelectors.link}`)
-    group.select(`.${linkSelectors.linkBand}`)
-    const linkSupport = group.select(`.${linkSelectors.linkSupport}`)
+    group.select(`.${linkSelectors.link()}`)
+    group.select(`.${linkSelectors.linkBand()}`)
+    const linkSupport = group.select(`.${linkSelectors.linkSupport()}`)
 
     linkSupport
       .style('stroke-opacity', (d._state.hovered || d._state.selected) ? 0.2 : 0)
@@ -108,18 +108,18 @@ export function updateLinks<N extends GraphInputNode, L extends GraphInputLink> 
 
   selection
     .classed(
-      linkSelectors.linkDashed,
+      linkSelectors.linkDashed(),
       d => getValue<GraphLink<N, L>, GraphLinkStyle>(d, linkStyle, d._indexGlobal) === GraphLinkStyle.Dashed
     )
 
   selection.each((d, i, elements) => {
     const element = elements[i]
     const linkGroup = select(element)
-    const link = linkGroup.select<SVGPathElement>(`.${linkSelectors.link}`)
-    const linkBand = linkGroup.select<SVGPathElement>(`.${linkSelectors.linkBand}`)
-    const linkSupport = linkGroup.select<SVGPathElement>(`.${linkSelectors.linkSupport}`)
-    const linkArrow = linkGroup.select<SVGUseElement>(`.${linkSelectors.linkArrow}`)
-    const flowGroup = linkGroup.select(`.${linkSelectors.flowGroup}`)
+    const link = linkGroup.select<SVGPathElement>(`.${linkSelectors.link()}`)
+    const linkBand = linkGroup.select<SVGPathElement>(`.${linkSelectors.linkBand()}`)
+    const linkSupport = linkGroup.select<SVGPathElement>(`.${linkSelectors.linkSupport()}`)
+    const linkArrow = linkGroup.select<SVGUseElement>(`.${linkSelectors.linkArrow()}`)
+    const flowGroup = linkGroup.select(`.${linkSelectors.flowGroup()}`)
     const linkColor = getLinkColor(d, config)
     const linkShiftTransform = getLinkShiftTransform(d, config.linkNeighborSpacing)
     const linkLabelDatum = getValue<GraphLink<N, L>, GraphCircleLabel>(d, linkLabel, d._indexGlobal)
@@ -138,7 +138,7 @@ export function updateLinks<N extends GraphInputNode, L extends GraphInputLink> 
 
     const pathData = `M${x1},${y1} C${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`
     link
-      .attr('class', linkSelectors.link)
+      .attr('class', linkSelectors.link())
       .style('stroke-width', getLinkStrokeWidth(d, scale, config))
       .style('stroke', linkColor)
       .attr('transform', linkShiftTransform)
@@ -147,7 +147,7 @@ export function updateLinks<N extends GraphInputNode, L extends GraphInputLink> 
       .attr('d', pathData)
 
     linkBand
-      .attr('class', linkSelectors.linkBand)
+      .attr('class', linkSelectors.linkBand())
       .attr('transform', linkShiftTransform)
       .style('stroke-width', getLinkBandWidth(d, scale, config))
       .style('stroke', linkColor)
@@ -189,7 +189,7 @@ export function updateLinks<N extends GraphInputNode, L extends GraphInputLink> 
       .style('opacity', 0)
 
     flowGroup
-      .selectAll(`.${linkSelectors.flowCircle}`)
+      .selectAll(`.${linkSelectors.flowCircle()}`)
       .attr('r', linkFlowParticleSize / scale)
       .style('fill', linkColor)
 
@@ -197,15 +197,15 @@ export function updateLinks<N extends GraphInputNode, L extends GraphInputLink> 
       .style('opacity', scale < ZoomLevel.Level2 ? 0 : 1)
 
     // Labels
-    const linkLabelGroup = linkGroup.select<SVGGElement>(`.${linkSelectors.linkLabelGroup}`)
+    const linkLabelGroup = linkGroup.select<SVGGElement>(`.${linkSelectors.linkLabelGroup()}`)
 
     if (linkLabelText) {
       const linkMarkerWidth = linkArrowStyle ? LINK_MARKER_WIDTH * 2 : 0
       const linkLabelShift = getBoolean(d, linkLabelShiftFromCenter, d._indexGlobal) ? -linkMarkerWidth + 4 : 0
       const linkLabelPos = linkPathElement.getPointAtLength(pathLength / 2 + linkLabelShift)
       const linkLabelTranslate = `translate(${linkLabelPos.x}, ${linkLabelPos.y})`
-      const linkLabelBackground = linkLabelGroup.select<SVGRectElement>(`.${linkSelectors.linkLabelBackground}`)
-      const linkLabelContent = linkLabelGroup.select<SVGTextElement>(`.${linkSelectors.linkLabelContent}`)
+      const linkLabelBackground = linkLabelGroup.select<SVGRectElement>(`.${linkSelectors.linkLabelBackground()}`)
+      const linkLabelContent = linkLabelGroup.select<SVGTextElement>(`.${linkSelectors.linkLabelContent()}`)
 
       // If the label was hidden or didn't have text before, we need to set the initial position
       if (!linkLabelContent.text() || linkLabelContent.attr('hidden')) {
@@ -283,14 +283,14 @@ export function animateLinkFlow<N extends GraphInputNode, L extends GraphInputLi
   selection.each((d, i, elements) => {
     const element = elements[i]
     const linkGroup = select(element)
-    const flowGroup = linkGroup.select(`.${linkSelectors.flowGroup}`)
+    const flowGroup = linkGroup.select(`.${linkSelectors.flowGroup()}`)
 
-    const linkPathElement = linkGroup.select<SVGPathElement>(`.${linkSelectors.linkSupport}`).node()
+    const linkPathElement = linkGroup.select<SVGPathElement>(`.${linkSelectors.linkSupport()}`).node()
     const pathLength = linkPathElement.getTotalLength()
 
     if (!getBoolean(d, linkFlow, d._indexGlobal)) return
     const t = d._state.flowAnimTime
-    const circles = flowGroup.selectAll(`.${linkSelectors.flowCircle}`)
+    const circles = flowGroup.selectAll(`.${linkSelectors.flowCircle()}`)
 
     circles
       .attr('transform', index => {
@@ -308,15 +308,15 @@ export function zoomLinks<N extends GraphInputNode, L extends GraphInputLink> (
 ): void {
   const { linkFlowParticleSize } = config
 
-  selection.classed(generalSelectors.zoomOutLevel2, scale < ZoomLevel.Level2)
-  selection.selectAll(`.${linkSelectors.flowCircle}`)
+  selection.classed(generalSelectors.zoomOutLevel2(), scale < ZoomLevel.Level2)
+  selection.selectAll(`.${linkSelectors.flowCircle()}`)
     .attr('r', linkFlowParticleSize / scale)
 
-  const linkElements = selection.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.link}`)
+  const linkElements = selection.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.link()}`)
   linkElements
     .style('stroke-width', d => getLinkStrokeWidth(d, scale, config))
 
-  const linkBandElements = selection.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.linkBand}`)
+  const linkBandElements = selection.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.linkBand()}`)
   linkBandElements
     .style('stroke-width', d => getLinkBandWidth(d, scale, config))
 }

@@ -34,7 +34,7 @@ export class BulletLegend {
     // Create SVG element for visualizations
     this.div = select(this._container)
       .append('div')
-      .attr('class', s.root)
+      .attr('class', s.root())
 
     this.element = this.div.node()
 
@@ -50,23 +50,23 @@ export class BulletLegend {
   render (): void {
     const { config } = this
 
-    const legendItems = this.div.selectAll<HTMLDivElement, unknown>(`.${s.item}`).data(config.items)
+    const legendItems = this.div.selectAll<HTMLDivElement, unknown>(`.${s.item()}`).data(config.items)
 
     const legendItemsEnter = legendItems.enter().append('div')
-      .attr('class', d => `${s.item} ${d.className ?? ''}`)
+      .attr('class', d => `${s.item()} ${d.className ?? ''}`)
       .on('click', this._onItemClick.bind(this))
 
     const legendItemsMerged = legendItemsEnter.merge(legendItems)
     legendItemsMerged
-      .classed(s.clickable, d => !!config.onLegendItemClick && this._isItemClickable(d))
+      .classed(s.clickable(), d => !!config.onLegendItemClick && this._isItemClickable(d))
       .style('display', (d: BulletLegendItemInterface) => d.hidden ? 'none' : null)
 
     // Bullet
     legendItemsEnter.append('span')
-      .attr('class', s.bullet)
+      .attr('class', s.bullet())
       .call(createBullets)
 
-    legendItemsMerged.select<SVGElement>(`.${s.bullet}`)
+    legendItemsMerged.select<SVGElement>(`.${s.bullet()}`)
       .style('width', config.bulletSize)
       .style('height', config.bulletSize)
       .style('box-sizing', 'content-box')
@@ -74,12 +74,12 @@ export class BulletLegend {
 
     // Labels
     legendItemsEnter.append('span')
-      .attr('class', s.label)
+      .attr('class', s.label())
       .classed(config.labelClassName, true)
       .style('max-width', config.labelMaxWidth)
       .style('font-size', config.labelFontSize)
 
-    legendItemsMerged.select(`.${s.label}`)
+    legendItemsMerged.select(`.${s.label()}`)
       .text((d: BulletLegendItemInterface) => d.name)
 
     legendItems.exit().remove()
@@ -92,7 +92,7 @@ export class BulletLegend {
   _onItemClick (event: MouseEvent, d: BulletLegendItemInterface): void {
     const { config: { onLegendItemClick } } = this
 
-    const legendItems = this.div.selectAll(`.${s.item}`).nodes() as HTMLElement[]
+    const legendItems = this.div.selectAll(`.${s.item()}`).nodes() as HTMLElement[]
     const index = legendItems.indexOf(event.currentTarget as HTMLElement)
     if (onLegendItemClick) onLegendItemClick(d, index)
   }

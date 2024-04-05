@@ -1,7 +1,7 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-scatter-cursor: default;
     --vis-scatter-fill-color: var(--vis-color-main);
     --vis-scatter-stroke-color: 'none';
@@ -17,21 +17,21 @@ export const globalStyles = injectGlobal`
     // Undefined by default to allow proper fallback to var(--vis-font-family)
     /* --vis-scatter-point-label-text-font-family: */
   }
-`
+`)
 
-export const root = css`
+export const root = (): string => css`
   label: scatter-component;
 `
 
-export const pointGroup = css`
+export const pointGroup = (): string => css`
   label: point-group;
 `
 
-export const pointGroupExit = css`
+export const pointGroupExit = (): string => css`
   label: point-group-exit;
 `
 
-export const point = css`
+export const point = (): string => css`
   label: point;
 
   > path {

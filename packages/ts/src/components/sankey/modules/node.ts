@@ -30,19 +30,19 @@ export function createNodes<N extends SankeyInputNode, L extends SankeyInputLink
 
   // Node
   sel.append('rect')
-    .attr('class', s.node)
+    .attr('class', s.node())
     .attr('width', config.nodeWidth)
     .attr('height', d => d.y1 - d.y0)
     .style('fill', node => getColor(node, config.nodeColor))
 
   // Labels
-  const labelGroup = sel.append('g').attr('class', s.labelGroup)
-  labelGroup.append('path').attr('class', s.labelBackground)
-  labelGroup.append('text').attr('class', s.label)
-  labelGroup.append('text').attr('class', s.sublabel)
+  const labelGroup = sel.append('g').attr('class', s.labelGroup())
+  labelGroup.append('path').attr('class', s.labelBackground())
+  labelGroup.append('text').attr('class', s.label())
+  labelGroup.append('text').attr('class', s.sublabel())
 
   // Node icon
-  sel.append('text').attr('class', s.nodeIcon)
+  sel.append('text').attr('class', s.nodeIcon())
     .attr('text-anchor', 'middle')
     .attr('dy', '0.5px')
 
@@ -85,7 +85,7 @@ export function updateNodes<N extends SankeyInputNode, L extends SankeyInputLink
     .style('opacity', d => d._state.greyout ? 0.2 : 1)
 
   // Node
-  smartTransition(sel.select(`.${s.node}`), duration)
+  smartTransition(sel.select(`.${s.node()}`), duration)
     .attr('width', config.nodeWidth)
     .attr('height', (d: SankeyNode<N, L>) => d.y1 - d.y0)
     .style('cursor', (d: SankeyNode<N, L>) => getString(d, config.nodeCursor))
@@ -96,7 +96,7 @@ export function updateNodes<N extends SankeyInputNode, L extends SankeyInputLink
   renderNodeLabels(sel, config, width, duration)
 
   // Node Icon
-  const nodeIcon = sel.select(`.${s.nodeIcon}`)
+  const nodeIcon = sel.select(`.${s.nodeIcon()}`)
   if (config.nodeIcon) {
     nodeIcon
       .attr('visibility', null)
@@ -127,7 +127,7 @@ export function renderNodeLabels<N extends SankeyInputNode, L extends SankeyInpu
   enforceNodeVisibility?: SankeyNode<N, L>
 ): void {
   // Label Rendering
-  const labelGroupSelection: Selection<SVGGElement, SankeyNode<N, L>, SVGGElement, any> = sel.select(`.${s.labelGroup}`)
+  const labelGroupSelection: Selection<SVGGElement, SankeyNode<N, L>, SVGGElement, any> = sel.select(`.${s.labelGroup()}`)
   const labelGroupEls = labelGroupSelection.nodes() || []
 
   // After rendering Label return a BBox so we can do intersection detection and hide some of tem
@@ -168,7 +168,7 @@ export function renderNodeLabels<N extends SankeyInputNode, L extends SankeyInpu
 
   // Hide intersecting labels
   for (const b of labelGroupBBoxes) {
-    b.selection.classed(s.hidden, b.hidden)
+    b.selection.classed(s.hidden(), b.hidden)
   }
 }
 
@@ -199,12 +199,12 @@ export function onNodeMouseOver<N extends SankeyInputNode, L extends SankeyInput
   width: number
 ): void {
   const labelGroup = nodeSelection.raise()
-    .select<SVGGElement>(`.${s.labelGroup}`)
+    .select<SVGGElement>(`.${s.labelGroup()}`)
 
-  if ((config.labelExpandTrimmedOnHover && labelGroup.classed(s.labelTrimmed)) || labelGroup.classed(s.hidden)) {
+  if ((config.labelExpandTrimmedOnHover && labelGroup.classed(s.labelTrimmed())) || labelGroup.classed(s.hidden())) {
     renderLabel(labelGroup, d, config, width, 0, true)
   }
-  labelGroup.classed(s.forceShow, true)
+  labelGroup.classed(s.forceShow(), true)
 }
 
 export function onNodeMouseOut<N extends SankeyInputNode, L extends SankeyInputLink> (
@@ -213,9 +213,9 @@ export function onNodeMouseOut<N extends SankeyInputNode, L extends SankeyInputL
   config: SankeyConfigInterface<N, L>,
   width: number
 ): void {
-  const labelGroup = nodeSelection.select<SVGGElement>(`.${s.labelGroup}`)
-  if (config.labelExpandTrimmedOnHover || labelGroup.classed(s.hidden)) {
+  const labelGroup = nodeSelection.select<SVGGElement>(`.${s.labelGroup()}`)
+  if (config.labelExpandTrimmedOnHover || labelGroup.classed(s.hidden())) {
     renderLabel(labelGroup, d, config, width, 0)
   }
-  labelGroup.classed(s.forceShow, false)
+  labelGroup.classed(s.forceShow(), false)
 }

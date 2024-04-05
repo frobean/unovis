@@ -33,21 +33,21 @@ export function createNodes<D extends GenericDataRecord> (
   selection: Selection<SVGGElement, LeafletMapPoint<D>, SVGGElement, unknown>
 ): void {
   selection.append('path')
-    .attr('class', s.pointPath)
+    .attr('class', s.pointPath())
     .attr('id', d => `point-${d.id}`)
     .style('opacity', 0)
 
   selection.append('g')
-    .attr('class', s.donutCluster)
+    .attr('class', s.donutCluster())
 
   selection.append('text')
-    .attr('class', s.innerLabel)
-    .classed(s.innerLabelCluster, d => (d.properties as LeafletMapClusterDatum<D>).cluster)
+    .attr('class', s.innerLabel())
+    .classed(s.innerLabelCluster(), d => (d.properties as LeafletMapClusterDatum<D>).cluster)
     .attr('id', d => `label-${d.id}`)
     .attr('dy', '0.32em')
 
   selection.append('text')
-    .attr('class', s.bottomLabel)
+    .attr('class', s.bottomLabel())
     .attr('dy', '0.32em')
     .attr('opacity', 1)
 }
@@ -60,9 +60,9 @@ export function updateNodes<D extends GenericDataRecord> (
 ): void {
   selection.each((d, i, elements) => {
     const group = select(elements[i])
-    const node: Selection<SVGPathElement, any, SVGGElement, any> = group.select(`.${s.pointPath}`)
-    const innerLabel: Selection<SVGTextElement, any, SVGElement, any> = group.select(`.${s.innerLabel}`)
-    const bottomLabel: Selection<SVGTextElement, any, SVGElement, any> = group.select(`.${s.bottomLabel}`)
+    const node: Selection<SVGPathElement, any, SVGGElement, any> = group.select(`.${s.pointPath()}`)
+    const innerLabel: Selection<SVGTextElement, any, SVGElement, any> = group.select(`.${s.innerLabel()}`)
+    const bottomLabel: Selection<SVGTextElement, any, SVGElement, any> = group.select(`.${s.bottomLabel()}`)
 
     const { x, y } = getPointPos(d, leafletMap)
     const donutData = d.donutData
@@ -89,7 +89,7 @@ export function updateNodes<D extends GenericDataRecord> (
     // To get updated on every render call
     const ringWidth = (isCluster && config.clusterRingWidth) || (isRing && config.pointRingWidth) || 0
     group.attr('transform', `translate(${x},${y})`)
-    group.select<SVGGElement>(`.${s.donutCluster}`)
+    group.select<SVGGElement>(`.${s.donutCluster()}`)
       .call(updateDonut, donutData, isCircular ? d.radius : 0, ringWidth)
 
     node.attr('d', d.path)
@@ -104,8 +104,8 @@ export function updateNodes<D extends GenericDataRecord> (
 
     // Updates required only when data changes
     node
-      .classed(s.pointPathCluster, isCluster)
-      .classed(s.pointPathRing, isRing)
+      .classed(s.pointPathCluster(), isCluster)
+      .classed(s.pointPathRing(), isRing)
       .style('fill', d.color)
       .style('stroke', d.color) // being used for hover
       .style('stroke-width', ringWidth)
@@ -147,7 +147,7 @@ export function collideLabels<D extends GenericDataRecord> (
   selection.each((datum1: LeafletMapPoint<D>, i, elements: ArrayLike<LabelSVGGElement>) => {
     const group1LabelElement = elements[i]
     const group1 = select(group1LabelElement)
-    const label1: Selection<SVGTextElement, any, SVGElement, any> = group1.select(`.${s.bottomLabel}`)
+    const label1: Selection<SVGTextElement, any, SVGElement, any> = group1.select(`.${s.bottomLabel()}`)
     group1LabelElement.labelVisible = true
 
     // Calculate bounding rect of point's bottom label
@@ -165,7 +165,7 @@ export function collideLabels<D extends GenericDataRecord> (
       if (i === j) continue
       const group2LabelElement = elements[j]
       const group2 = select(group2LabelElement)
-      const label2: Selection<SVGTextElement, any, SVGElement, any> = group2.select(`.${s.bottomLabel}`)
+      const label2: Selection<SVGTextElement, any, SVGElement, any> = group2.select(`.${s.bottomLabel()}`)
       const datum2 = group2.datum() as LeafletMapPoint<D>
 
       // Calculate bounding rect of the second point's circle

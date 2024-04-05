@@ -1,4 +1,3 @@
-import { css } from '@emotion/css'
 import { extent, merge as mergeArrays } from 'd3-array'
 import { Selection } from 'd3-selection'
 
@@ -22,6 +21,9 @@ import { Direction } from 'types/direction'
 // Utils
 import { clamp, clean, flatten } from 'utils/data'
 import { guid } from 'utils/misc'
+
+// Emotion css
+import { css } from '../../emotion/css'
 
 // Config
 import { XYContainerDefaultConfig, XYContainerConfigInterface } from './config'

@@ -1,7 +1,7 @@
-import { injectGlobal } from '@emotion/css'
-
 import { kebabCaseToCamel } from 'utils/text'
 import type { KebabToCamelCase, RemovePrefix } from 'utils/type'
+
+import { injectGlobal } from '../emotion/css'
 
 export function getCssVarNames<
   T extends Record<string, unknown>,
@@ -23,7 +23,7 @@ export function injectGlobalCssVariables<T extends Record<string, string | numbe
   componentRootClassName: string
 ): void {
   injectGlobal({
-    ':root': cssVarsObject,
+    ':root,:host': cssVarsObject,
     [`body.theme-dark .${componentRootClassName}`]: Object.keys(cssVarsObject)
       .filter(key => key.includes('--vis-dark'))
       .map(key => ({

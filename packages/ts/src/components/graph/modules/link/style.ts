@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { css, injectGlobal } from '../../../../emotion/css'
 
-export const links = css`
+export const links = (): string => css`
   label: links;
 `
 
-export const variables = injectGlobal`
-  :root {
+export const initStyles = (): void => injectGlobal`
+  :root,:host {
     --vis-graph-link-stroke-color: #e6e9f3;
     --vis-graph-link-stroke-opacity: 1.0;
     --vis-graph-link-greyout-opacity: 0.3;
@@ -27,7 +27,7 @@ export const variables = injectGlobal`
     --vis-graph-link-dominant-baseline: middle;
   }
 
-  body.theme-dark ${`.${links}`} {
+  body.theme-dark ${`.${links()}`} {
     --vis-graph-link-stroke-color: var(--vis-dark-graph-link-stroke-color);
     --vis-graph-link-label-stroke-color: var(--vis-dark-graph-link-label-stroke-color);
     --vis-graph-link-label-text-color: var(--vis-dark-graph-link-label-text-color);
@@ -35,7 +35,7 @@ export const variables = injectGlobal`
   }
 `
 
-export const linkSupport = css`
+export const linkSupport = (): string => css`
   label: link-support;
 
   fill: none;
@@ -47,7 +47,7 @@ export const linkSupport = css`
   transition: stroke-opacity 0.2s;
 `
 
-export const link = css`
+export const link = (): string => css`
   label: link;
 
   fill: none;
@@ -58,34 +58,34 @@ export const link = css`
   pointer-events: none;
 `
 
-export const linkDashed = css`
+export const linkDashed = (): string => css`
   label: dashed;
 
-  ${`.${link}`} {
+  ${`.${link()}`} {
     stroke-dasharray: var(--vis-graph-link-dashed-stroke-dasharray);
   }
 `
 
-export const linkArrow = css`
+export const linkArrow = (): string => css`
   label: link-arrow;
   fill: var(--vis-graph-link-stroke-color);
 `
 
-export const gLink = css`
+export const gLink = (): string => css`
   label: g-link;
 `
 
-export const gLinkExit = css`
+export const gLinkExit = (): string => css`
   label: g-link-exit;
   pointer-events: none;
 `
 
-export const greyedOutLink = css`
+export const greyedOutLink = (): string => css`
   label: greyed-out;
   opacity: var(--vis-graph-link-greyout-opacity);
 `
 
-export const linkBand = css`
+export const linkBand = (): string => css`
   label: link-band;
 
   stroke-opacity: var(--vis-graph-link-band-opacity);
@@ -94,30 +94,30 @@ export const linkBand = css`
   fill: none;
 `
 
-export const flowGroup = css`
+export const flowGroup = (): string => css`
   label: flow-group;
 
   pointer-events: none;
 `
 
-export const flowCircle = css`
+export const flowCircle = (): string => css`
   label: flow-circle;
 
   fill: var(--vis-graph-link-stroke-color);
 `
 
-export const linkLabelGroup = css`
+export const linkLabelGroup = (): string => css`
   label: label-group;
   pointer-events: all;
 `
 
-export const linkLabelBackground = css`
+export const linkLabelBackground = (): string => css`
   label: label-background;
 
   fill: var(--vis-graph-link-label-background);
 `
 
-export const linkLabelContent = css`
+export const linkLabelContent = (): string => css`
   label: label-content;
 
   font-size: var(--vis-graph-link-label-font-size);

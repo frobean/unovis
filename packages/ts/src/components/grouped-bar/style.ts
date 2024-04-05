@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: grouped-bar-component;
 `
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-grouped-bar-cursor: default;
     --vis-grouped-bar-fill-color: var(--vis-color-main);
     --vis-grouped-bar-stroke-color: none;
@@ -18,12 +18,12 @@ export const globalStyles = injectGlobal`
     --vis-dark-grouped-bar-stroke-color: none;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-grouped-bar-stroke-color: var(--vis-dark-grouped-bar-stroke-color);
   }
-`
+`)
 
-export const bar = css`
+export const bar = (): string => css`
   label: bar;
   fill: var(--vis-grouped-bar-fill-color);
   stroke: var(--vis-grouped-bar-stroke-color);
@@ -36,10 +36,10 @@ export const bar = css`
   }
 `
 
-export const barGroup = css`
+export const barGroup = (): string => css`
   label: barGroup;
 `
 
-export const barGroupExit = css`
+export const barGroupExit = (): string => css`
   label: barGroupExit;
 `

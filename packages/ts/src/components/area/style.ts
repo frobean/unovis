@@ -1,12 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-
-export const root = css`
+export const root = (): string => css`
   label: area-component;
 `
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-area-cursor: default;
     --vis-area-fill-opacity: 1;
     --vis-area-stroke-color: none;
@@ -20,12 +19,13 @@ export const globalStyles = injectGlobal`
     --vis-dark-area-stroke-color: none;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-area-stroke-color: var(--vis-dark-area-stroke-color);
   }
 
-`
-export const area = css`
+`)
+
+export const area = (): string => css`
   label: area;
   cursor: var(--vis-area-cursor);
   fill-opacity: var(--vis-area-fill-opacity);

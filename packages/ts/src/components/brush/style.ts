@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: brush-component;
 `
 
-export const variables = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-brush-selection-fill-color: #0b1640;
     --vis-brush-selection-stroke-color: #acb2b9;
     --vis-brush-handle-fill-color: #6d778c;
@@ -17,15 +17,15 @@ export const variables = injectGlobal`
     --vis-dark-brush-handle-stroke-color: var(--vis-color-grey);
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-brush-selection-fill-color: var(--vis-dark-brush-selection-fill-color);
     --vis-brush-selection-stroke-color: var(--vis-dark-brush-selection-stroke-color);
     --vis-brush-handle-fill-color: var(--vis-dark-brush-handle-fill-color);
     --vis-brush-handle-stroke-color: var(--vis-dark-brush-handle-stroke-color);
   }
-`
+`)
 
-export const brush = css`
+export const brush = (): string => css`
   label: brush;
   fill: none;
   stroke: none;
@@ -48,14 +48,14 @@ export const brush = css`
   }
 `
 
-export const unselected = css`
+export const unselected = (): string => css`
   label: unselected;
   fill: var(--vis-brush-selection-fill-color);
   opacity: 0.4;
   pointer-events: none;
 `
 
-export const handleLine = css`
+export const handleLine = (): string => css`
   label: handle-line;
   stroke: var(--vis-brush-handle-stroke-color);
   stroke-width: 1;

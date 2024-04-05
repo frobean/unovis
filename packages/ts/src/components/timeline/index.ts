@@ -25,10 +25,10 @@ export class Timeline<Datum> extends XYComponentCore<Datum, TimelineConfigInterf
   public config: TimelineConfigInterface<Datum> = this._defaultConfig
 
   events = {
-    [Timeline.selectors.rows]: {
+    [Timeline.selectors.rows()]: {
       wheel: this._onMouseWheel.bind(this),
     },
-    [Timeline.selectors.line]: {
+    [Timeline.selectors.line()]: {
       wheel: this._onMouseWheel.bind(this),
     },
   }
@@ -52,20 +52,20 @@ export class Timeline<Datum> extends XYComponentCore<Datum, TimelineConfigInterf
     if (config) this.setConfig(config)
 
     // Invisible background rect to track events
-    this._background = this.g.append('rect').attr('class', s.background)
+    this._background = this.g.append('rect').attr('class', s.background())
 
     // Group for content
-    this._rowsGroup = this.g.append('g').attr('class', s.rows)
-    this._linesGroup = this.g.append('g').attr('class', s.lines)
-    this._labelsGroup = this.g.append('g').attr('class', s.labels)
-    this._scrollBarGroup = this.g.append('g').attr('class', s.scrollbar)
+    this._rowsGroup = this.g.append('g').attr('class', s.rows())
+    this._linesGroup = this.g.append('g').attr('class', s.lines())
+    this._labelsGroup = this.g.append('g').attr('class', s.labels())
+    this._scrollBarGroup = this.g.append('g').attr('class', s.scrollbar())
 
     // Scroll bar
     this._scrollBarBackground = this._scrollBarGroup.append('rect')
-      .attr('class', s.scrollbarBackground)
+      .attr('class', s.scrollbarBackground())
 
     this._scrollBarHandle = this._scrollBarGroup.append('rect')
-      .attr('class', s.scrollbarHandle)
+      .attr('class', s.scrollbarHandle())
 
     // Set up scrollbar drag event
     const dragBehaviour = drag<SVGRectElement, unknown>()
@@ -85,7 +85,7 @@ export class Timeline<Datum> extends XYComponentCore<Datum, TimelineConfigInterf
         const recordLabels = this._getRecordLabels(data)
         const longestLabel = recordLabels.reduce((acc, val) => acc.length > val.length ? acc : val, '')
         const label = this._labelsGroup.append('text')
-          .attr('class', s.label)
+          .attr('class', s.label())
           .text(longestLabel)
           .call(trimSVGText, config.maxLabelWidth)
         const labelWidth = label.node().getBBox().width
@@ -129,11 +129,11 @@ export class Timeline<Datum> extends XYComponentCore<Datum, TimelineConfigInterf
       .attr('opacity', 0)
 
     // Labels
-    const labels = this._labelsGroup.selectAll<SVGTextElement, string>(`.${s.label}`)
+    const labels = this._labelsGroup.selectAll<SVGTextElement, string>(`.${s.label()}`)
       .data(config.showLabels ? recordLabelsUnique : [])
 
     const labelsEnter = labels.enter().append('text')
-      .attr('class', s.label)
+      .attr('class', s.label())
 
     labelsEnter.merge(labels)
       .attr('x', xRange[0] - maxLineWidth / 2 - this._labelMargin)
@@ -149,14 +149,14 @@ export class Timeline<Datum> extends XYComponentCore<Datum, TimelineConfigInterf
     const xStart = xRange[0]
     const numRows = Math.max(Math.floor(yHeight / config.rowHeight), numUniqueRecords)
     const recordTypes: (string | undefined)[] = Array(numRows).fill(null).map((_, i) => recordLabelsUnique[i])
-    const rects = this._rowsGroup.selectAll<SVGRectElement, number>(`.${s.row}`)
+    const rects = this._rowsGroup.selectAll<SVGRectElement, number>(`.${s.row()}`)
       .data(recordTypes)
 
     const rectsEnter = rects.enter().append('rect')
-      .attr('class', s.row)
+      .attr('class', s.row())
 
     rectsEnter.merge(rects)
-      .classed(s.rowOdd, config.alternatingRowColors ? (_, i) => !(i % 2) : null)
+      .classed(s.rowOdd(), config.alternatingRowColors ? (_, i) => !(i % 2) : null)
       .attr('x', xStart - maxLineWidth / 2)
       .attr('width', xRange[1] - xStart + maxLineWidth)
       .attr('y', (_, i) => yStart + i * config.rowHeight)
@@ -165,14 +165,14 @@ export class Timeline<Datum> extends XYComponentCore<Datum, TimelineConfigInterf
     rects.exit().remove()
 
     // Lines
-    const lines = this._linesGroup.selectAll<SVGRectElement, Datum>(`.${s.line}`)
+    const lines = this._linesGroup.selectAll<SVGRectElement, Datum>(`.${s.line()}`)
       .data(data, (d: Datum, i) => getString(d, config.id, i) ?? [
         this._getRecordType(d, i), getNumber(d, config.x, i),
       ].join('-'))
 
     const linesEnter = lines.enter().append('rect')
-      .attr('class', s.line)
-      .classed(s.rowOdd, config.alternatingRowColors
+      .attr('class', s.line())
+      .classed(s.rowOdd(), config.alternatingRowColors
         ? (d, i) => !(recordLabelsUnique.indexOf(this._getRecordType(d, i)) % 2)
         : null)
       .style('fill', (d, i) => getColor(d, config.color, ordinalScale(this._getRecordType(d, i))))

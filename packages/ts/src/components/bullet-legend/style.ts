@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: bullet-legend-component;
 `
 
-export const variables = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     // Undefined by default to allow proper fallback to var(--vis-font-family)
     /* --vis-legend-font-family: */
 
@@ -21,7 +21,7 @@ export const variables = injectGlobal`
     --vis-dark-legend-bullet-inactive-color: #6c778c;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-legend-label-color: var(--vis-dark-legend-label-color);
     --vis-legend-bullet-inactive-color: var(--vis-dark-legend-bullet-inactive-color);
   }
@@ -29,9 +29,9 @@ export const variables = injectGlobal`
   body.theme-patterns {
     --vis-legend-bullet-size: 14px;
   }
-`
+`)
 
-export const item = css`
+export const item = (): string => css`
   label: legendItem;
   display: inline-flex;
   align-items: center;
@@ -42,11 +42,11 @@ export const item = css`
   user-select: none;
 `
 
-export const clickable = css`
+export const clickable = (): string => css`
   cursor: pointer;
 `
 
-export const label = css`
+export const label = (): string => css`
   label: legendItemLabel;
   font-size: var(--vis-legend-label-font-size);
   display: inline-block;
@@ -58,7 +58,7 @@ export const label = css`
   white-space: nowrap;
 `
 
-export const bullet = css`
+export const bullet = (): string => css`
   label: legendItemBullet;
   margin-right: var(--vis-legend-bullet-label-spacing);
   height: var(--vis-legend-bullet-size);

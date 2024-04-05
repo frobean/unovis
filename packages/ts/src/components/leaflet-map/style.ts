@@ -1,12 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
-
 // Utils
 import { getCssVarNames, injectGlobalCssVariables } from 'utils/style'
+
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
 // Inject Leaflet global style
 // eslint-disable-next-line
 import leafletCSS from './leaflet.css'
-injectGlobal(leafletCSS)
 
 const cssVarDefaults = {
   '--vis-map-container-background-color': '#dfe5eb',
@@ -56,7 +55,7 @@ const cssVarDefaults = {
   '--vis-dark-map-cluster-expanded-background-fill-color': '#fff',
 }
 
-export const root = css`
+export const root = (): string => css`
   label: leaflet-map-component;
 
   width: 100%;
@@ -70,19 +69,23 @@ export const root = css`
 `
 
 export const variables = getCssVarNames(cssVarDefaults)
-injectGlobalCssVariables(cssVarDefaults, root)
 
-export const background = `${root} canvas`
+addInitFunction((): void => {
+  injectGlobal(leafletCSS)
+  injectGlobalCssVariables(cssVarDefaults, root())
+})
 
-export const points = css`
+export const background = (): string => `${root()} canvas`
+
+export const points = (): string => css`
   label: g-points;
 `
 
-export const point = css`
+export const point = (): string => css`
   label: g-point;
 `
 
-export const pointPath = css`
+export const pointPath = (): string => css`
   label: point-path;
 
   stroke-opacity: 1;
@@ -102,12 +105,12 @@ export const pointPath = css`
   }
 `
 
-export const pointPathRing = css`
+export const pointPathRing = (): string => css`
   label: point-path-ring;
   fill: var(${variables.mapPointRingFillColor});
 `
 
-export const pointPathCluster = css`
+export const pointPathCluster = (): string => css`
   label: point-path-cluster;
   fill-opacity: 0.9;
   stroke: none;
@@ -117,12 +120,12 @@ export const pointPathCluster = css`
   stroke-width: var(${variables.mapClusterDefaultStrokeWidth});
 `
 
-export const pointSelectionRing = css`
+export const pointSelectionRing = (): string => css`
   label: point-selection-ring;
   stroke: var(${variables.mapPointDefaultFillColor});
 `
 
-export const pointSelection = css`
+export const pointSelection = (): string => css`
   label: point-selection;
 
   opacity: 0;
@@ -135,7 +138,7 @@ export const pointSelection = css`
   }
 `
 
-export const innerLabel = css`
+export const innerLabel = (): string => css`
   label: inner-label;
 
   text-anchor: middle;
@@ -145,12 +148,12 @@ export const innerLabel = css`
   font-weight: 600;
 `
 
-export const innerLabelCluster = css`
+export const innerLabelCluster = (): string => css`
   label: inner-label-cluster;
   fill: var(${variables.mapPointInnerLabelTextColorDark});
 `
 
-export const bottomLabel = css`
+export const bottomLabel = (): string => css`
   label: bottom-label;
 
   text-anchor: middle;
@@ -160,7 +163,7 @@ export const bottomLabel = css`
   font-weight: 600;
 `
 
-export const donutCluster = css`
+export const donutCluster = (): string => css`
   label: donut-cluster;
 
   transform: scale(1);
@@ -175,19 +178,19 @@ export const donutCluster = css`
   }
 `
 
-export const svgOverlay = css`
+export const svgOverlay = (): string => css`
   label: svg-overlay;
   position: absolute;
   pointer-events: none;
 `
 
-export const backgroundRect = css`
+export const backgroundRect = (): string => css`
   label: background-rect;
 
   opacity: 0;
 `
 
-export const clusterBackground = css`
+export const clusterBackground = (): string => css`
   label: cluster-background;
 
   fill: var(${variables.mapClusterExpandedBackgroundFillColor});
@@ -199,19 +202,19 @@ export const clusterBackground = css`
   }
 `
 
-export const onFeatureHover = css`
+export const onFeatureHover = (): string => css`
   label: feature-hovered;
 `
 
-export const mapboxglCanvas = css`
+export const mapboxglCanvas = (): string => css`
   pointer-events: all;
   cursor: grab;
 
-  &${`.${onFeatureHover}`} {
+  &${`.${onFeatureHover()}`} {
     cursor: default;
   }
 `
 
-export const map = css`
+export const map = (): string => css`
   label: map;
 `

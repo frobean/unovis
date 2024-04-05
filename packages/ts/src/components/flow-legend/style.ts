@@ -1,15 +1,15 @@
-import { css, injectGlobal } from '@emotion/css'
 import { UNOVIS_ICON_FONT_FAMILY_DEFAULT } from 'styles/index'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: flow-legend-component;
 
   position: relative;
   user-select: none;
 `
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-flow-legend-label-background: #ffffff;
     --vis-flow-legend-label-color: #71788a;
     --vis-flow-legend-link-color: #E5E9F7;
@@ -24,13 +24,13 @@ export const globalStyles = injectGlobal`
     --vis-dark-flow-legend-arrow-color: #71788a;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-flow-legend-label-background: var(--vis-dark-flow-legend-label-background);
     --vis-flow-legend-label-color: var(--vis-dark-flow-legend-label-color);
     --vis-flow-legend-link-color: var(--vis-dark-flow-legend-link-color);
     --vis-flow-legend-arrow-color: var(--vis-dark-flow-legend-arrow-color);
   }
-`
+`)
 
 export const line = (lineColor: string): string => css`
   label: line;
@@ -42,7 +42,7 @@ export const line = (lineColor: string): string => css`
   top: 50%;
 `
 
-export const labels = css`
+export const labels = (): string => css`
   label: labels;
 
   position: relative;
@@ -52,7 +52,7 @@ export const labels = css`
   justify-content: space-between;
 `
 
-export const item = css`
+export const item = (): string => css`
   label: item;
 
   position: relative;
@@ -61,7 +61,7 @@ export const item = css`
   padding: 10px;
 `
 
-export const clickable = css`
+export const clickable = (): string => css`
   cursor: pointer;
 
   &:hover {

@@ -47,9 +47,9 @@ export class Donut<Datum> extends ComponentCore<Datum[], DonutConfigInterface<Da
     this.arcBackground = this.g.append('path')
     this.arcGroup = this.g.append('g')
     this.centralLabel = this.g.append('text')
-      .attr('class', s.centralLabel)
+      .attr('class', s.centralLabel())
     this.centralSubLabel = this.g.append('text')
-      .attr('class', s.centralSubLabel)
+      .attr('class', s.centralSubLabel())
   }
 
   get bleed (): Spacing {
@@ -106,11 +106,11 @@ export class Donut<Datum> extends ComponentCore<Datum[], DonutConfigInterface<Da
 
     // Arc segments
     const arcsSelection = this.arcGroup
-      .selectAll<SVGPathElement, DonutArcDatum<Datum>>(`.${s.segment}`)
+      .selectAll<SVGPathElement, DonutArcDatum<Datum>>(`.${s.segment()}`)
       .data(arcData, (d: DonutArcDatum<Datum>) => config.id(d.data, d.index))
 
     const arcsEnter = arcsSelection.enter().append('path')
-      .attr('class', s.segment)
+      .attr('class', s.segment())
       .call(createArc, config)
 
     const arcsMerged = arcsSelection.merge(arcsEnter)
@@ -118,7 +118,7 @@ export class Donut<Datum> extends ComponentCore<Datum[], DonutConfigInterface<Da
     arcsMerged.sort((a, b) => b.value - a.value)
 
     arcsSelection.exit<DonutArcDatum<Datum>>()
-      .attr('class', s.segmentExit)
+      .attr('class', s.segmentExit())
       .call(removeArc, duration)
 
     // Label
@@ -135,7 +135,7 @@ export class Donut<Datum> extends ComponentCore<Datum[], DonutConfigInterface<Da
     if (config.centralSubLabelWrap) wrapSVGText(this.centralSubLabel, innerRadius * 1.9)
 
     // Background
-    this.arcBackground.attr('class', s.background)
+    this.arcBackground.attr('class', s.background())
       .attr('visibility', config.showBackground ? null : 'hidden')
       .attr('transform', `translate(${this._width / 2},${this._height / 2})`)
 

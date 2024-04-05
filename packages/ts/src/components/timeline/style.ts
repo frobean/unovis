@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: timeline-component;
 `
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-timeline-row-even-fill-color: #FFFFFF;
     --vis-timeline-row-odd-fill-color: #F7FAFC;
     --vis-timeline-row-background-opacity: 1;
@@ -29,24 +29,24 @@ export const globalStyles = injectGlobal`
     --vis-dark-timeline-label-color: #EFF5F8;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-timeline-row-even-fill-color: var(--vis-dark-timeline-row-even-fill-color);
     --vis-timeline-row-odd-fill-color: var(--vis-dark-timeline-row-odd-fill-color);
     --vis-timeline-scrollbar-background-color: var(--vis-dark-timeline-scrollbar-background-color);
     --vis-timeline-scrollbar-color: var(--vis-dark-timeline-scrollbar-color);
     --vis-timeline-label-color: var(--vis-dark-timeline-label-color);
   }
-`
+`)
 
-export const background = css`
+export const background = (): string => css`
   label: background;
 `
 
-export const lines = css`
+export const lines = (): string => css`
   label: lines;
 `
 
-export const line = css`
+export const line = (): string => css`
   label: line;
   fill: var(--vis-timeline-line-color);
   cursor: var(--vis-timeline-cursor);
@@ -59,40 +59,40 @@ export const line = css`
   }
 `
 
-export const rows = css`
+export const rows = (): string => css`
   label: rows;
 `
 
-export const row = css`
+export const row = (): string => css`
   label: row;
   fill: var(--vis-timeline-row-even-fill-color);
   opacity: var(--vis-timeline-row-background-opacity);
 `
 
-export const rowOdd = css`
+export const rowOdd = (): string => css`
   label: row-odd;
   fill: var(--vis-timeline-row-odd-fill-color);
 `
 
-export const scrollbar = css`
+export const scrollbar = (): string => css`
   label: scroll-bar;
 `
 
-export const scrollbarHandle = css`
+export const scrollbarHandle = (): string => css`
   label: scroll-bar-handle;
   fill: var(--vis-timeline-scrollbar-color);
 `
 
-export const scrollbarBackground = css`
+export const scrollbarBackground = (): string => css`
   label: scroll-bar-background;
   fill: var(--vis-timeline-scrollbar-background-color);
 `
 
-export const labels = css`
+export const labels = (): string => css`
   label: labels;
 `
 
-export const label = css`
+export const label = (): string => css`
   label: label;
   dominant-baseline: middle;
   font-size: var(--vis-timeline-label-font-size);

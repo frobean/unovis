@@ -106,7 +106,7 @@ export class LeafletMap<Datum extends GenericDataRecord> extends ComponentCore<D
   static DEFAULT_CONTAINER_HEIGHT = 600
 
   protected events = {
-    [LeafletMap.selectors.point]: {
+    [LeafletMap.selectors.point()]: {
       mouseup: this._onPointMouseUp.bind(this),
       mousedown: this._onPointMouseDown.bind(this),
       click: this._onPointClick.bind(this),
@@ -120,7 +120,7 @@ export class LeafletMap<Datum extends GenericDataRecord> extends ComponentCore<D
 
     this._container.appendChild(this.element)
     this.g
-      .attr('class', s.root)
+      .attr('class', s.root())
       .attr('aria-hidden', true)
 
     if (config) this.setConfig(config)
@@ -139,7 +139,7 @@ export class LeafletMap<Datum extends GenericDataRecord> extends ComponentCore<D
     this._leafletInitializationPromise = new Promise((resolve) => {
       setupMap(this.element, this.config).then(map => {
         // Apply the `s.map` class to `tilePane` to allow tooltip interactions
-        select(map.leaflet.getPanes().tilePane).classed(s.map, true)
+        select(map.leaflet.getPanes().tilePane).classed(s.map(), true)
         if (config) this.setConfig(config)
 
         this._map = map
@@ -167,18 +167,18 @@ export class LeafletMap<Datum extends GenericDataRecord> extends ComponentCore<D
         })
 
         this._map.svgOverlay
-          .attr('class', s.svgOverlay)
+          .attr('class', s.svgOverlay())
           .insert('rect', ':first-child')
-          .attr('class', s.backgroundRect)
+          .attr('class', s.backgroundRect())
           .attr('width', '100%')
           .attr('height', '100%')
 
-        this._pointGroup = this._map.svgGroup.append('g').attr('class', s.points)
+        this._pointGroup = this._map.svgGroup.append('g').attr('class', s.points())
         this._clusterBackground = this._pointGroup.append('g')
-          .attr('class', s.clusterBackground)
+          .attr('class', s.clusterBackground())
           .call(createBackgroundNode)
         this._pointSelectionRing = this._pointGroup.append('g')
-          .attr('class', s.pointSelectionRing)
+          .attr('class', s.pointSelectionRing())
           .call(createNodeSelectionRing)
 
         this._map.leaflet.setView(initialMapCenter, initialMapZoom)
@@ -516,11 +516,11 @@ export class LeafletMap<Datum extends GenericDataRecord> extends ComponentCore<D
       .attr('transform', `translate(${-dx},${-dy})`)
 
     // Render content
-    const points = this._pointGroup.selectAll<SVGGElement, LeafletMapPoint<Datum>>(`.${s.point}:not(.exit)`)
+    const points = this._pointGroup.selectAll<SVGGElement, LeafletMapPoint<Datum>>(`.${s.point()}:not(.exit)`)
       .data(pointData, (d: LeafletMapPoint<Datum>, i) => `${d.id || d.geometry.coordinates.join('')}`)
 
     points.exit<LeafletMapPoint<Datum>>().classed('exit', true).call(removeNodes)
-    const pointsEnter = points.enter().append('g').attr('class', s.point)
+    const pointsEnter = points.enter().append('g').attr('class', s.point())
       .call(createNodes)
 
     const pointsMerged = points.merge(pointsEnter)
@@ -532,7 +532,7 @@ export class LeafletMap<Datum extends GenericDataRecord> extends ComponentCore<D
     if (this._expandedCluster && config.clusterBackground) {
       pointData.forEach((d, i) => { d._zIndex = (d.properties as LeafletMapPointDatum<Datum>)?.expandedClusterPoint ? 2 : 0 })
       this._pointGroup
-        .selectAll<SVGGElement, LeafletMapPoint<Datum>>(`.${s.point}, .${s.clusterBackground}, .${s.pointSelectionRing}`)
+        .selectAll<SVGGElement, LeafletMapPoint<Datum>>(`.${s.point()}, .${s.clusterBackground()}, .${s.pointSelectionRing()}`)
         .sort((a: LeafletMapPoint<Datum>, b: LeafletMapPoint<Datum>) => a._zIndex - b._zIndex)
     }
 

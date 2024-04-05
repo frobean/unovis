@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: axis-component;
 `
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     // Undefined by default to allow proper fallback to var(--vis-font-family)
     /* --vis-axis-font-family: */
     --vis-axis-tick-color: #e8e9ef;
@@ -28,24 +28,24 @@ export const globalStyles = injectGlobal`
     --vis-dark-axis-label-color: #fefefe;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-axis-tick-color: var(--vis-dark-axis-tick-color);
     --vis-axis-domain-color: var(--vis-dark-axis-domain-color);
     --vis-axis-tick-label-color: var(--vis-dark-axis-tick-label-color);
     --vis-axis-grid-color: var(--vis-dark-axis-grid-color);
     --vis-axis-label-color: var(--vis-dark-axis-label-color);
   }
-`
+`)
 
-export const hideTickLine = css`
+export const hideTickLine = (): string => css`
   label: hide-tick-line;
 `
 
-export const hideDomain = css`
+export const hideDomain = (): string => css`
   label: hide-domain;
 `
 
-export const axis = css`
+export const axis = (): string => css`
   label: axis;
 
   user-select: none;
@@ -55,20 +55,20 @@ export const axis = css`
     stroke-width: var(--vis-axis-domain-line-width, var(--vis-axis-grid-line-width));
   }
 
-  &${`.${hideTickLine}`} {
+  &${`.${hideTickLine()}`} {
     .tick > line {
       opacity: 0;
     }
   }
 
-  &${`.${hideDomain}`} {
+  &${`.${hideDomain()}`} {
     .domain {
       opacity: 0;
     }
   }
 `
 
-export const grid = css`
+export const grid = (): string => css`
   label: grid;
 
   .domain {
@@ -81,7 +81,7 @@ export const grid = css`
   }
 `
 
-export const tick = css`
+export const tick = (): string => css`
   label: tick;
 
   stroke: none;
@@ -102,7 +102,7 @@ export const tick = css`
 
 `
 
-export const label = css`
+export const label = (): string => css`
   label: label;
   fill: var(--vis-axis-label-color);
   font-size: var(--vis-axis-label-font-size);
@@ -110,6 +110,6 @@ export const label = css`
   text-anchor: middle;
 `
 
-export const tickLabel = css`
+export const tickLabel = (): string => css`
   label: tick-label;
 `

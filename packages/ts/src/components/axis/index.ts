@@ -46,7 +46,7 @@ export class Axis<Datum> extends XYComponentCore<Datum, AxisConfigInterface<Datu
 
     this.axisGroup = this.g.append('g')
     this.gridGroup = this.g.append('g')
-      .attr('class', s.grid)
+      .attr('class', s.grid())
   }
 
   /** Renders axis to an invisible grouped to calculate automatic chart margins */
@@ -202,14 +202,14 @@ export class Axis<Datum> extends XYComponentCore<Datum, AxisConfigInterface<Datu
     const ticks = selection.selectAll<SVGGElement, number | Date>('g.tick')
 
     ticks
-      .classed(s.tick, true)
+      .classed(s.tick(), true)
       .style('font-size', config.tickTextFontSize)
 
     // Selecting the <text> elements of the ticks to apply formatting. By default, this selection
     // will include exiting elements, so we're filtering them out.
     const tickText = selection.selectAll<SVGTextElement, number | Date>('g.tick > text')
       .filter(tickValue => tickValues.some((t: number | Date) => isEqual(tickValue, t))) // We use isEqual to compare Dates
-      .classed(s.tickLabel, true)
+      .classed(s.tickLabel(), true)
       .style('fill', config.tickTextColor) as Selection<SVGTextElement, number, SVGGElement, unknown> | Selection<SVGTextElement, Date, SVGGElement, unknown>
 
 
@@ -240,9 +240,9 @@ export class Axis<Datum> extends XYComponentCore<Datum, AxisConfigInterface<Datu
     })
 
     selection
-      .classed(s.axis, true)
-      .classed(s.hideTickLine, !config.tickLine)
-      .classed(s.hideDomain, !config.domainLine)
+      .classed(s.axis(), true)
+      .classed(s.hideTickLine(), !config.tickLine)
+      .classed(s.hideDomain(), !config.domainLine)
 
     if (config.fullSize) {
       const path = this._getFullDomainPath(0)
@@ -298,7 +298,7 @@ export class Axis<Datum> extends XYComponentCore<Datum, AxisConfigInterface<Datu
     const { type, label, labelMargin, labelFontSize } = this.config
 
     // Remove the old label first to calculate the axis size properly
-    selection.selectAll(`.${s.label}`).remove()
+    selection.selectAll(`.${s.label()}`).remove()
 
     // Calculate label position and rotation
     const axisPosition = this.getPosition()
@@ -317,7 +317,7 @@ export class Axis<Datum> extends XYComponentCore<Datum, AxisConfigInterface<Datu
     // Append new label
     selection
       .append('text')
-      .attr('class', s.label)
+      .attr('class', s.label())
       .text(label)
       .attr('dy', `${this._getLabelDY()}em`)
       .attr('transform', `translate(${offsetX + marginX},${offsetY + marginY}) rotate(${rotation})`)

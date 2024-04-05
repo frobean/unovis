@@ -1,7 +1,7 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-xy-label-cursor: default;
     // Undefined by default to allow proper fallback to var(--vis-color-main)
     /* --vis-xy-label-fill-color */
@@ -17,13 +17,13 @@ export const globalStyles = injectGlobal`
     --vis-xy-label-text-color-light: #fff;
     --vis-xy-label-text-font-weight: 500;
   }
-`
+`)
 
-export const root = css`
+export const root = (): string => css`
   label: xy-labels-component;
 `
 
-export const labelGroup = css`
+export const labelGroup = (): string => css`
   label: label-g;
 
   > rect, text {
@@ -48,10 +48,10 @@ export const labelGroup = css`
   }
 `
 
-export const cluster = css`
+export const cluster = (): string => css`
   label: cluster;
 `
 
-export const label = css`
+export const label = (): string => css`
   label: label;
 `

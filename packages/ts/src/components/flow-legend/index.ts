@@ -26,11 +26,11 @@ export class FlowLegend {
   constructor (element: HTMLElement, config?: FlowLegendConfigInterface) {
     this._container = element
 
-    this.div = select(this._container).append('div').attr('class', s.root)
+    this.div = select(this._container).append('div').attr('class', s.root())
     this.element = this.div.node()
 
     this.line = this.div.append('div')
-    this.labels = this.div.append('div').attr('class', s.labels)
+    this.labels = this.div.append('div').attr('class', s.labels())
 
     if (config) this.update(config)
   }
@@ -66,12 +66,12 @@ export class FlowLegend {
     }, [])
 
     // Draw
-    const legendItems = this.labels.selectAll<HTMLDivElement, FlowLegendItem>(`.${s.item}`)
+    const legendItems = this.labels.selectAll<HTMLDivElement, FlowLegendItem>(`.${s.item()}`)
       .data(legendData)
 
     const legendItemsEnter = legendItems.enter()
       .append('div')
-      .attr('class', s.item)
+      .attr('class', s.item())
       .attr('opacity', 0)
 
     legendItemsEnter.filter(d => d.type === FlowLegendItemType.Label)
@@ -83,7 +83,7 @@ export class FlowLegend {
           ? s.arrow(config.arrowColor)
           : s.label(config.labelFontSize, config.labelColor)
       )
-      .classed(s.clickable, d => d.type === FlowLegendItemType.Label && !!config.onLegendItemClick)
+      .classed(s.clickable(), d => d.type === FlowLegendItemType.Label && !!config.onLegendItemClick)
 
     const legendItemsMerged = legendItemsEnter.merge(legendItems)
     smartTransition(legendItemsMerged, 500)

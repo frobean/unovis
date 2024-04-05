@@ -1,7 +1,7 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-crosshair-line-stroke-color: #888;
     --vis-crosshair-line-stroke-width: 1px;
     --vis-crosshair-line-stroke-opacity: 1;
@@ -9,20 +9,20 @@ export const globalStyles = injectGlobal`
     --vis-crosshair-circle-stroke-width: 1px;
     --vis-crosshair-circle-stroke-opacity: 0.75;
   }
-`
+`)
 
-export const root = css`
+export const root = (): string => css`
   label: crosshair-component;
 `
 
-export const line = css`
+export const line = (): string => css`
   stroke: var(--vis-crosshair-line-stroke-color);
   stroke-width: var(--vis-crosshair-line-stroke-width);
   stroke-opacity: var(--vis-crosshair-line-stroke-opacity);
   pointer-events: none;
 `
 
-export const circle = css`
+export const circle = (): string => css`
   stroke: var(--vis-crosshair-circle-stroke-color);
   stroke-width: var(--vis-crosshair-circle-stroke-width);
   stroke-opacity: var(--vis-crosshair-circle-stroke-opacity);

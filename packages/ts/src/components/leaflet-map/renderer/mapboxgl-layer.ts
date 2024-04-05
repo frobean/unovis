@@ -2,13 +2,14 @@ import type L from 'leaflet'
 import type Maplibre from 'maplibre-gl'
 import type { Map } from 'maplibre-gl'
 
-import { injectGlobal } from '@emotion/css'
-
 // Utils
 import { isObject } from 'utils/data'
 
 // Types
 import { GenericDataRecord } from 'types/data'
+
+// Emotion css
+import { addInitFunction, injectGlobal } from '../../../emotion/css'
 
 // Config
 import { LeafletMapConfigInterface } from '../config'
@@ -21,7 +22,8 @@ import { MaplibreGLLayer } from './leaflet-maplibre-gl'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import mapLibreStyles from './maplibre-gl.css.js'
-injectGlobal(mapLibreStyles)
+
+addInitFunction((): void => injectGlobal(mapLibreStyles))
 
 export function getMaplibreGLLayer<Datum extends GenericDataRecord> (
   config: LeafletMapConfigInterface<Datum>,

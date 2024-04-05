@@ -52,15 +52,15 @@ export class ChordDiagram<
   radiusScale: ScalePower<number, number> = scalePow()
 
   events = {
-    [ChordDiagram.selectors.node]: {
+    [ChordDiagram.selectors.node()]: {
       mouseover: this._onNodeMouseOver.bind(this),
       mouseout: this._onNodeMouseOut.bind(this),
     },
-    [ChordDiagram.selectors.link]: {
+    [ChordDiagram.selectors.link()]: {
       mouseover: this._onLinkMouseOver.bind(this),
       mouseout: this._onLinkMouseOut.bind(this),
     },
-    [ChordDiagram.selectors.label]: {
+    [ChordDiagram.selectors.label()]: {
       mouseover: this._onNodeMouseOver.bind(this),
       mouseout: this._onNodeMouseOut.bind(this),
     },
@@ -78,10 +78,10 @@ export class ChordDiagram<
     super()
     if (config) this.setConfig(config)
 
-    this.background = this.g.append('rect').attr('class', s.background)
-    this.linkGroup = this.g.append('g').attr('class', s.links)
-    this.nodeGroup = this.g.append('g').attr('class', s.nodes)
-    this.labelGroup = this.g.append('g').attr('class', s.labels)
+    this.background = this.g.append('rect').attr('class', s.background())
+    this.linkGroup = this.g.append('g').attr('class', s.links())
+    this.nodeGroup = this.g.append('g').attr('class', s.nodes())
+    this.labelGroup = this.g.append('g').attr('class', s.labels())
   }
 
   get bleed (): Spacing {
@@ -175,7 +175,7 @@ export class ChordDiagram<
       .innerRadius(d => Math.max(this.radiusScale(d.y1) - nodeWidth, 0))
       .outerRadius(d => this.radiusScale(d.y1))
 
-    this.g.classed(s.transparent, this._forceHighlight)
+    this.g.classed(s.transparent(), this._forceHighlight)
     this.background
       .attr('width', this._width)
       .attr('height', this._height)
@@ -188,16 +188,16 @@ export class ChordDiagram<
 
     // Links
     const linksSelection = this.linkGroup
-      .selectAll<SVGPathElement, ChordRibbon<N>>(`.${s.link}`)
+      .selectAll<SVGPathElement, ChordRibbon<N>>(`.${s.link()}`)
       .data(this._links, d => String(d.data._id))
 
     const linksEnter = linksSelection.enter().append('path')
-      .attr('class', s.link)
+      .attr('class', s.link())
       .call(createLink, this.radiusScale)
 
     const linksMerged = linksSelection
       .merge(linksEnter)
-      .classed(s.highlightedLink, l => {
+      .classed(s.highlightedLink(), l => {
         const linkId = l.data.id ?? l.data._indexGlobal
         return config.highlightedLinkIds?.includes(linkId)
       })
@@ -208,16 +208,16 @@ export class ChordDiagram<
 
     // Nodes
     const nodesSelection = this.nodeGroup
-      .selectAll<SVGPathElement, ChordNode<N>>(`.${s.node}`)
+      .selectAll<SVGPathElement, ChordNode<N>>(`.${s.node()}`)
       .data(this._nodes, d => String(d.uid))
 
     const nodesEnter = nodesSelection.enter().append('path')
-      .attr('class', s.node)
+      .attr('class', s.node())
       .call(createNode, config)
 
     const nodesMerged = nodesSelection
       .merge(nodesEnter)
-      .classed(s.highlightedNode, d => config.highlightedNodeId === d.data._id)
+      .classed(s.highlightedNode(), d => config.highlightedNodeId === d.data._id)
     nodesMerged.call(updateNode, config, this.arcGen, duration, this.bleed)
 
     nodesSelection.exit()
@@ -226,18 +226,18 @@ export class ChordDiagram<
     // Labels
     const labelWidth = size - radius
     const labels = this.labelGroup
-      .selectAll<SVGGElement, ChordNode<N>>(`.${s.label}`)
+      .selectAll<SVGGElement, ChordNode<N>>(`.${s.label()}`)
       .data(this._nodes, d => String(d.uid))
 
     const labelEnter = labels.enter().append('g')
-      .attr('class', s.label)
+      .attr('class', s.label())
       .call(createLabel, config, this.radiusScale)
 
     const labelsMerged = labels.merge(labelEnter)
     labelsMerged.call(updateLabel, config, labelWidth, this.radiusScale, duration)
 
     labels.exit()
-      .attr('class', s.labelExit)
+      .attr('class', s.labelExit())
       .call(removeLabel, duration)
   }
 
@@ -285,11 +285,11 @@ export class ChordDiagram<
       this._links.forEach(l => { delete l._state.hovered })
     }
 
-    this.nodeGroup.selectAll<SVGPathElement, ChordNode<N>>(`.${s.node}`)
-      .classed(s.highlightedNode, d => d._state.hovered)
-    this.linkGroup.selectAll<SVGPathElement, ChordRibbon<N>>(`.${s.link}`)
-      .classed(s.highlightedLink, d => d._state.hovered)
+    this.nodeGroup.selectAll<SVGPathElement, ChordNode<N>>(`.${s.node()}`)
+      .classed(s.highlightedNode(), d => d._state.hovered)
+    this.linkGroup.selectAll<SVGPathElement, ChordRibbon<N>>(`.${s.link()}`)
+      .classed(s.highlightedLink(), d => d._state.hovered)
 
-    this.g.classed(s.transparent, !!links)
+    this.g.classed(s.transparent(), !!links)
   }
 }

@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { css, injectGlobal } from '../../../../emotion/css'
 
-export const nodes = css`
+export const nodes = (): string => css`
   label: nodes;
 `
 
-export const variables = injectGlobal`
-  :root {
+export const initStyles = (): void => injectGlobal`
+  :root,:host {
     /* Node Fill */
     --vis-graph-node-stroke-color: rgb(206, 211, 222);
     --vis-graph-node-fill-color: #fff;
@@ -72,7 +72,7 @@ export const variables = injectGlobal`
     --vis-graph-node-dominant-baseline: middle;
   }
 
-  body.theme-dark ${`.${nodes}`} {
+  body.theme-dark ${`.${nodes()}`} {
     --vis-graph-node-stroke-color: var(--vis-dark-graph-node-stroke-color);
     --vis-graph-node-fill-color: var(--vis-dark-graph-node-fill-color);
     --vis-graph-node-gauge-color: var(--vis-dark-graph-node-gauge-color);
@@ -98,7 +98,7 @@ export const variables = injectGlobal`
   }
 `
 
-export const node = css`
+export const node = (): string => css`
   label: node-shape;
 
   stroke: var(--vis-graph-node-stroke-color);
@@ -106,7 +106,7 @@ export const node = css`
   transition: .4s fill, .4s stroke;
 `
 
-export const nodeIcon = css`
+export const nodeIcon = (): string => css`
   label: icon;
 
   font-family: var(--vis-graph-icon-font-family), var(--vis-font-family);
@@ -117,7 +117,7 @@ export const nodeIcon = css`
   fill: var(--vis-graph-node-icon-fill-color);
 `
 
-export const nodeBottomIcon = css`
+export const nodeBottomIcon = (): string => css`
   label: node-bottom-icon;
   font-family: var(--vis-graph-icon-font-family), var(--vis-font-family);
   font-size: var(--vis-graph-node-bottom-icon-font-size);
@@ -130,11 +130,11 @@ export const nodeBottomIcon = css`
   stroke-width: var(--vis-graph-node-bottom-icon-stroke-width);
 `
 
-export const nodeIsDragged = css`
+export const nodeIsDragged = (): string => css`
   label: dragged;
 `
 
-export const label = css`
+export const label = (): string => css`
   label: label;
 
   text-anchor: middle;
@@ -142,7 +142,7 @@ export const label = css`
   font-size: var(--vis-graph-node-label-font-size);
 `
 
-export const labelBackground = css`
+export const labelBackground = (): string => css`
   label: background;
 
   opacity: 0.9;
@@ -151,18 +151,18 @@ export const labelBackground = css`
   fill: var(--vis-graph-node-label-background);
 `
 
-export const labelText = css`
+export const labelText = (): string => css`
   label: label-text;
 `
 
-export const labelTextContent = css`
+export const labelTextContent = (): string => css`
   label: label-text-content;
 
   fill: var(--vis-graph-node-label-text-color);
   font-family: var(--vis-graph-node-label-font-family, var(--vis-font-family));
 `
 
-export const subLabelTextContent = css`
+export const subLabelTextContent = (): string => css`
   label: sublabel-text-content;
 
   fill: var(--vis-graph-node-sublabel-text-color);
@@ -170,11 +170,11 @@ export const subLabelTextContent = css`
   font-size: var(--vis-graph-node-sublabel-font-size);
 `
 
-export const sideLabelsGroup = css`
+export const sideLabelsGroup = (): string => css`
   label: side-labels-group;
 `
 
-export const sideLabelBackground = css`
+export const sideLabelBackground = (): string => css`
   label: side-label-background;
 
   stroke-opacity: 0.8;
@@ -182,7 +182,7 @@ export const sideLabelBackground = css`
   fill: var(--vis-graph-node-side-label-background-fill-color);
 `
 
-export const sideLabel = css`
+export const sideLabel = (): string => css`
   label: side-label;
 
   font-family: var(--vis-graph-icon-font-family), var(--vis-font-family);
@@ -192,39 +192,39 @@ export const sideLabel = css`
   fill: var(--vis-graph-node-side-label-fill-color-bright);
 `
 
-export const sideLabelGroup = css`
+export const sideLabelGroup = (): string => css`
   label: side-label-group;
   cursor: default;
 `
 
-export const gNode = css`
+export const gNode = (): string => css`
   label: g-node;
 
   transition: .25s opacity;
 `
 
-export const draggable = css`
+export const draggable = (): string => css`
   label: draggable;
 
   &:hover {
     cursor: grab;
   }
 
-  &${`.${nodeIsDragged}`} {
+  &${`.${nodeIsDragged()}`} {
     cursor: grabbing;
   }
 `
 
-export const gNodeExit = css`
+export const gNodeExit = (): string => css`
   label: g-node-exit;
   pointer-events: none;
 `
 
-export const nodeSelectionActive = css`
+export const nodeSelectionActive = (): string => css`
   label: active;
 `
 
-export const nodeSelection = css`
+export const nodeSelection = (): string => css`
   label: node-selection;
 
   fill: none;
@@ -238,64 +238,64 @@ export const nodeSelection = css`
   stroke: var(--vis-graph-node-selection-color);
   stroke-opacity: 0.75;
 
-  &${`.${nodeSelectionActive}`} {
+  &${`.${nodeSelectionActive()}`} {
     opacity: 1;
     transform: scale(1.2);
   }
 `
 
-export const nodeGauge = css`
+export const nodeGauge = (): string => css`
   label: node-gauge;
 
   fill: var(--vis-graph-node-gauge-color);
   transition: .4s fill;
 `
 
-export const nodePolygon = css`
+export const nodePolygon = (): string => css`
   label: polygon;
 
-  ${`.${nodeGauge}`} {
+  ${`.${nodeGauge()}`} {
     fill-opacity: 0;
     stroke-linecap: round;
     pointer-events: none;
   }
 `
 
-export const customNode = css`
+export const customNode = (): string => css`
   label: custom-node;
 
   stroke-width: 0;
 `
 
-export const greyedOutNode = css`
+export const greyedOutNode = (): string => css`
   label: greyed-out;
   opacity: var(--vis-graph-node-greyout-opacity);
   filter: var(--vis-graph-node-greyout-filter);
 
-  ${`.${node}`} {
+  ${`.${node()}`} {
     fill: var(--vis-graph-node-greyout-color) !important;
     stroke: var(--vis-graph-node-greyout-color) !important;
   }
 
-  ${`.${nodeIcon}`} {
+  ${`.${nodeIcon()}`} {
      fill: var(--vis-graph-node-icon-greyout-color) !important;
   }
 
-  ${`.${nodeGauge}`} {
+  ${`.${nodeGauge()}`} {
     fill: var(--vis-graph-node-greyout-color) !important;
     stroke: var(--vis-graph-node-greyout-color) !important;
   }
 
-  ${`.${label}`} {
+  ${`.${label()}`} {
     opacity: 0.5;
   }
 
-  ${`.${sideLabelBackground}`} {
+  ${`.${sideLabelBackground()}`} {
      fill: var(--vis-graph-node-side-label-background-greyout-color) !important;
      stroke-opacity: 0.5;
    }
 
-   ${`.${sideLabel}`} {
+   ${`.${sideLabel()}`} {
     fill: var(--vis-graph-node-side-label-fill-color-bright) !important;
     opacity: 0.25;
   }

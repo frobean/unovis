@@ -33,7 +33,7 @@ export class Area<Datum> extends XYComponentCore<Datum, AreaConfigInterface<Datu
   private _prevNegative: boolean[] | undefined // To help guessing the stack direction when an accessor was set to null or 0
 
   events = {
-    [Area.selectors.area]: {},
+    [Area.selectors.area()]: {},
   }
 
   constructor (config?: AreaConfigInterface<Datum>) {
@@ -81,11 +81,11 @@ export class Area<Datum> extends XYComponentCore<Datum, AreaConfigInterface<Datu
     const areaMaxIdx = stackedData.length - 1
     const stackedDataReversed = stackedData.reverse()
     const areas = this.g
-      .selectAll<SVGPathElement, AreaDatum>(`.${s.area}`)
+      .selectAll<SVGPathElement, AreaDatum>(`.${s.area()}`)
       .data(stackedDataReversed)
 
     const areasEnter = areas.enter().append('path')
-      .attr('class', s.area)
+      .attr('class', s.area())
       .attr('d', d => this._areaGen(d) || this._emptyPath())
       .style('opacity', 0)
       .style('fill', (d, i) => getColor(data, config.color, areaMaxIdx - i))

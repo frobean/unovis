@@ -30,7 +30,7 @@ export class Brush<Datum> extends XYComponentCore<Datum, BrushConfigInterface<Da
   handleLines: Selection<SVGLineElement, BrushHandleType, SVGGElement, unknown>
   brushBehaviour: BrushBehavior<unknown> = brushX()
   events = {
-    [Brush.selectors.brush]: {},
+    [Brush.selectors.brush()]: {},
   }
 
   private _selection: [number, number] | null = null
@@ -42,20 +42,20 @@ export class Brush<Datum> extends XYComponentCore<Datum, BrushConfigInterface<Da
 
     this.brush = this.g
       .append('g')
-      .attr('class', s.brush)
+      .attr('class', s.brush())
 
     const directions: BrushHandleType[] = [{ type: BrushDirection.West }, { type: BrushDirection.East }]
     this.unselectedRange = this.g
-      .selectAll(`.${s.unselected}`)
+      .selectAll(`.${s.unselected()}`)
       .data(directions)
       .enter().append('rect')
-      .attr('class', s.unselected)
+      .attr('class', s.unselected())
 
     this.handleLines = this.g
-      .selectAll(`.${s.handleLine}`)
+      .selectAll(`.${s.handleLine()}`)
       .data(directions)
       .enter().append('line')
-      .attr('class', s.handleLine)
+      .attr('class', s.handleLine())
   }
 
   _render (customDuration?: number): void {

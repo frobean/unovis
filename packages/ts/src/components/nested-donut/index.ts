@@ -57,11 +57,11 @@ NestedDonutConfigInterface<Datum>
     if (config) this.setConfig(config)
     this.arcBackground = this.g.append('g')
     this.arcGroup = this.g.append('g')
-      .attr('class', s.segmentsGroup)
+      .attr('class', s.segmentsGroup())
     this.centralLabel = this.g.append('text')
-      .attr('class', s.centralLabel)
+      .attr('class', s.centralLabel())
     this.centralSubLabel = this.g.append('text')
-      .attr('class', s.centralSubLabel)
+      .attr('class', s.centralSubLabel())
   }
 
   _render (customDuration?: number): void {
@@ -89,11 +89,11 @@ NestedDonutConfigInterface<Datum>
 
     // Layer backgrounds
     const backgrounds = this.arcBackground
-      .selectAll<SVGPathElement, NestedDonutLayer>(`.${s.background}`)
+      .selectAll<SVGPathElement, NestedDonutLayer>(`.${s.background()}`)
       .data(layers, d => d._id)
 
     const backgroundsEnter = backgrounds.enter().append('path')
-      .attr('class', s.background)
+      .attr('class', s.background())
       .attr('visibility', config.showBackground ? null : 'hidden')
 
     const backgroundsMerged = backgrounds.merge(backgroundsEnter)
@@ -113,43 +113,43 @@ NestedDonutConfigInterface<Datum>
       .remove()
 
     // Segments
-    const segments = this.arcGroup.selectAll<SVGGElement, NestedDonutSegment<Datum>>(`${s.segment}`)
+    const segments = this.arcGroup.selectAll<SVGGElement, NestedDonutSegment<Datum>>(`${s.segment()}`)
       .data(data, d => d._id)
 
     const segmentsEnter = segments.enter()
       .append('g')
-      .attr('class', s.segment)
+      .attr('class', s.segment())
 
     segments.merge(segmentsEnter)
     smartTransition(segments.exit(), duration)
-      .attr('class', s.segmentExit)
+      .attr('class', s.segmentExit())
       .style('opacity', 0)
       .remove()
 
     // Segment arcs
     const arcs = this.arcGroup
-      .selectAll<SVGPathElement, NestedDonutSegment<Datum>>(`.${s.segmentArc}`)
+      .selectAll<SVGPathElement, NestedDonutSegment<Datum>>(`.${s.segmentArc()}`)
       .data(data, d => d._id)
 
     const arcsEnter = segmentsEnter.append('path')
-      .attr('class', s.segmentArc)
+      .attr('class', s.segmentArc())
       .call(createArc, config)
 
     arcs.merge(arcsEnter)
       .call(updateArc, config, this.arcGen, duration)
 
     arcs.exit<NestedDonutSegment<Datum>>()
-      .attr('class', s.segmentExit)
+      .attr('class', s.segmentExit())
       .call(removeArc, duration)
 
     // Segment labels
     if (config.showSegmentLabels) {
       const labels = this.arcGroup
-        .selectAll<SVGTextElement, NestedDonutSegment<Datum>>(`.${s.segmentLabel}`)
+        .selectAll<SVGTextElement, NestedDonutSegment<Datum>>(`.${s.segmentLabel()}`)
         .data(data, d => d._id)
 
       const labelsEnter = segmentsEnter.append('text')
-        .attr('class', s.segmentLabel)
+        .attr('class', s.segmentLabel())
         .call(createLabel, this.arcGen)
 
       labels.merge(labelsEnter)

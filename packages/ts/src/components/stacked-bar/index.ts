@@ -89,7 +89,7 @@ export class StackedBar<Datum> extends XYComponentCore<Datum, StackedBarConfigIn
     this._prevNegative = stacked.map(s => !!s.negative)
 
     const barGroups = this.g
-      .selectAll<SVGGElement, Datum>(`.${s.barGroup}`)
+      .selectAll<SVGGElement, Datum>(`.${s.barGroup()}`)
       .data(this._barData, (d, i) => `${getString(d, config.id, i) ?? i}`)
 
     const getBarGroupsTransform = (d: Datum, i: number): string => {
@@ -100,7 +100,7 @@ export class StackedBar<Datum> extends XYComponentCore<Datum, StackedBarConfigIn
     }
 
     const barGroupsEnter = barGroups.enter().append('g')
-      .attr('class', s.barGroup)
+      .attr('class', s.barGroup())
       .attr('transform', getBarGroupsTransform)
       .style('opacity', 1)
 
@@ -110,14 +110,14 @@ export class StackedBar<Datum> extends XYComponentCore<Datum, StackedBarConfigIn
       .style('opacity', 1)
 
     const barGroupExit = barGroups.exit()
-      .attr('class', s.barGroupExit)
+      .attr('class', s.barGroupExit())
 
     smartTransition(barGroupExit, duration)
       .style('opacity', 0)
       .remove()
 
     // Animate bars from exiting groups going down
-    smartTransition(barGroupExit.selectAll(`.${s.bar}`), duration)
+    smartTransition(barGroupExit.selectAll(`.${s.bar()}`), duration)
       .attr('transform', this.isVertical()
         ? `translate(0,${this._height / 3})`
         : `translate(${this._width / 6},0)`
@@ -125,13 +125,13 @@ export class StackedBar<Datum> extends XYComponentCore<Datum, StackedBarConfigIn
 
     // Render Bars
     const bars = barGroupsMerged
-      .selectAll<SVGPathElement, StackedBarDataRecord<Datum>>(`.${s.bar}`)
+      .selectAll<SVGPathElement, StackedBarDataRecord<Datum>>(`.${s.bar()}`)
       .data((d, j) => stacked.map((s) =>
         ({ ...d, _stacked: s[j], _negative: s.negative, _ending: s.ending }))
       )
 
     const barsEnter = bars.enter().append('path')
-      .attr('class', s.bar)
+      .attr('class', s.bar())
       .attr('d', (d, j) => this._getBarPath(d, j, true))
       .style('fill', (d, j) => getColor(d, config.color, j))
 

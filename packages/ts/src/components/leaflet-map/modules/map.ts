@@ -149,7 +149,7 @@ export async function setupMap<T extends GenericDataRecord> (mapContainer: HTMLE
 
   if (maplibreMap && topoJSONLayer?.sources) {
     const canvas = maplibreMap.getCanvas()
-    const canvasSelection = select(canvas).classed(s.mapboxglCanvas, true)
+    const canvasSelection = select(canvas).classed(s.mapboxglCanvas(), true)
     const tilePaneSelection = select(leafletMap.getPanes().tilePane)
 
     maplibreMap.on('mousemove', (event) => {
@@ -159,7 +159,7 @@ export async function setupMap<T extends GenericDataRecord> (mapContainer: HTMLE
 
       const features = maplibreMap.queryRenderedFeatures(event.point, { layers: [layerName] })
       tilePaneSelection.datum(features[0])
-      canvasSelection.classed(s.onFeatureHover, Boolean(features[0]))
+      canvasSelection.classed(s.onFeatureHover(), Boolean(features[0]))
     })
 
     maplibreMap.on('load', () => {

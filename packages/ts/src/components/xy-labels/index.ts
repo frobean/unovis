@@ -24,7 +24,7 @@ export class XYLabels<Datum> extends XYComponentCore<Datum, XYLabelsConfigInterf
   public config: XYLabelsConfigInterface<Datum> = this._defaultConfig
 
   events = {
-    [XYLabels.selectors.label]: {},
+    [XYLabels.selectors.label()]: {},
   }
 
   constructor (config?: XYLabelsConfigInterface<Datum>) {
@@ -37,20 +37,20 @@ export class XYLabels<Datum> extends XYComponentCore<Datum, XYLabelsConfigInterf
     const duration = isNumber(customDuration) ? customDuration : config.duration
 
     const labelGroups = this.g
-      .selectAll<SVGGElement, XYLabel<Datum> | XYLabelCluster<Datum>>(`.${s.labelGroup}`)
+      .selectAll<SVGGElement, XYLabel<Datum> | XYLabelCluster<Datum>>(`.${s.labelGroup()}`)
       .data(this._getDataToRender())
 
     const labelGroupsExit = labelGroups.exit<XYLabel<Datum> | XYLabelCluster<Datum>>()
     removeLabels(labelGroupsExit, duration)
 
     const labelGroupsEnter = labelGroups.enter().append('g')
-      .attr('class', s.labelGroup)
+      .attr('class', s.labelGroup())
       .call(createLabels)
 
     const labelGroupsMerged = labelGroupsEnter
       .merge(labelGroups)
-      .classed(s.cluster, d => !!(d as XYLabelCluster<Datum>).records)
-      .classed(s.label, d => !(d as XYLabelCluster<Datum>).records)
+      .classed(s.cluster(), d => !!(d as XYLabelCluster<Datum>).records)
+      .classed(s.label(), d => !(d as XYLabelCluster<Datum>).records)
 
     labelGroupsMerged.call(updateLabels, config, duration)
   }

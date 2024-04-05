@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { css, injectGlobal } from '../../../../emotion/css'
 
-export const panels = css`
+export const panels = (): string => css`
   label: panels;
 `
 
-export const variables = injectGlobal`
-  :root {
+export const initStyles = (): void => injectGlobal`
+  :root,:host {
     --vis-graph-panel-border-color: #E6E9F3;
     --vis-graph-panel-border-opacity: 0.9;
     --vis-graph-panel-fill-color: #ffffff;
@@ -32,7 +32,7 @@ export const variables = injectGlobal`
     --vis-dark-graph-panel-border-color: #a0a6ad;
   }
 
-  body.theme-dark ${`.${panels}`} {
+  body.theme-dark ${`.${panels()}`} {
     --vis-graph-panel-border-color: var(--vis-dark-graph-panel-border-color);
     --vis-graph-panel-fill-color: var(--vis-dark-graph-panel-fill-color);
     --vis-graph-panel-label-color: var(--vis-dark-graph-panel-label-color);
@@ -43,11 +43,11 @@ export const variables = injectGlobal`
   }
 `
 
-export const gPanel = css`
+export const gPanel = (): string => css`
   label: g-panel;
 `
 
-export const panel = css`
+export const panel = (): string => css`
   label: panel;
 
   stroke: var(--vis-graph-panel-border-color);
@@ -55,13 +55,13 @@ export const panel = css`
   fill: var(--vis-graph-panel-fill-color);
 `
 
-export const label = css`
+export const label = (): string => css`
   label: label;
 
   fill: var(--vis-graph-panel-label-color);
 `
 
-export const background = css`
+export const background = (): string => css`
   label: background;
 
   opacity: 0.9;
@@ -71,7 +71,7 @@ export const background = css`
   stroke: none;
 `
 
-export const labelText = css`
+export const labelText = (): string => css`
   label: label-text;
 
   text-anchor: middle;
@@ -82,11 +82,11 @@ export const labelText = css`
   font-family: var(--vis-graph-panel-label-font-family, var(--vis-font-family));
 `
 
-export const panelSelectionActive = css`
+export const panelSelectionActive = (): string => css`
   label: active;
 `
 
-export const panelSelection = css`
+export const panelSelection = (): string => css`
   label: panel-selection-outline;
 
   opacity: 0;
@@ -97,33 +97,33 @@ export const panelSelection = css`
   stroke: var(--vis-graph-panel-dashed-outline-color);
   stroke-opacity: 0;
 
-  &${`.${panelSelectionActive}`} {
+  &${`.${panelSelectionActive()}`} {
     opacity: 1;
     stroke-opacity: 0.75;
   }
 `
 
-export const greyout = css`
+export const greyout = (): string => css`
   label: greyout;
   opacity: 0.4;
 `
 
-export const sideIconGroup = css`
+export const sideIconGroup = (): string => css`
   label: side-icon-group;
 `
 
-export const sideIconShape = css`
+export const sideIconShape = (): string => css`
   label: side-icon-shape;
 
   fill: var(--vis-graph-panel-side-icon-shape-fill-color);
   stroke-width: 2px;
 `
 
-export const customSideIcon = css`
+export const customSideIcon = (): string => css`
   label: side-icon-custom;
 `
 
-export const sideIconSymbol = css`
+export const sideIconSymbol = (): string => css`
   label: side-label-icon-text;
   font-family: var(--vis-graph-icon-font-family), var(--vis-font-family);
   fill: var(--vis-graph-panel-side-icon-symbol-color);

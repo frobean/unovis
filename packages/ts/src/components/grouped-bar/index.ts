@@ -100,7 +100,7 @@ export class GroupedBar<Datum> extends XYComponentCore<Datum, GroupedBarConfigIn
       .paddingOuter(config.barPadding)
 
     const barGroups = this.g
-      .selectAll<SVGGElement, Datum>(`.${s.barGroup}`)
+      .selectAll<SVGGElement, Datum>(`.${s.barGroup()}`)
       .data(this._barData, (d, i) => `${getString(d, config.id, i) ?? i}`)
 
     const getBarGroupsTransform = (d: Datum, i: number): string => {
@@ -113,7 +113,7 @@ export class GroupedBar<Datum> extends XYComponentCore<Datum, GroupedBarConfigIn
     const barGroupsEnter = barGroups
       .enter()
       .append('g')
-      .attr('class', s.barGroup)
+      .attr('class', s.barGroup())
       .attr('transform', getBarGroupsTransform)
       .style('opacity', 1)
 
@@ -122,11 +122,11 @@ export class GroupedBar<Datum> extends XYComponentCore<Datum, GroupedBarConfigIn
       .attr('transform', getBarGroupsTransform)
       .style('opacity', 1)
 
-    const barGroupExit = barGroups.exit().attr('class', s.barGroupExit)
+    const barGroupExit = barGroups.exit().attr('class', s.barGroupExit())
     smartTransition(barGroupExit, duration).style('opacity', 0).remove()
 
     // Animate exiting bars going down
-    smartTransition(barGroupExit.selectAll<SVGPathElement, Datum>(`.${s.bar}`), duration)
+    smartTransition(barGroupExit.selectAll<SVGPathElement, Datum>(`.${s.bar()}`), duration)
       .attr('transform', (d, i, e) => {
         return this.isVertical()
           ? `translate(0,${this.yScale(0)}) scale(1,0)`
@@ -135,14 +135,14 @@ export class GroupedBar<Datum> extends XYComponentCore<Datum, GroupedBarConfigIn
 
     const barWidth = innerBandScale.bandwidth()
     const bars = barGroupsMerged
-      .selectAll<SVGPathElement, Datum>(`.${s.bar}`)
+      .selectAll<SVGPathElement, Datum>(`.${s.bar()}`)
       .data((d) => yAccessors.map(() => d))
 
     const valueAxisDirection = this._getValueAxisDirection()
     const barsEnter = bars
       .enter()
       .append('path')
-      .attr('class', s.bar)
+      .attr('class', s.bar())
       .attr('d', (d, i) => {
         const x = innerBandScale(i)
         const y = this.valueScale(0)

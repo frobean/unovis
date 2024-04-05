@@ -1,8 +1,8 @@
-import { injectGlobal } from '@emotion/css'
 import { getCSSVariableValue } from 'utils/misc'
 import { UnovisText } from 'types/text'
 import { colors, colorsDark, getCSSColorVariable, getLighterColor, getDarkerColor } from './colors'
 import { fills, lines, getPatternVariable } from './patterns'
+import { injectGlobal } from '../emotion/css'
 
 export const UNOVIS_ICON_FONT_FAMILY_DEFAULT = globalThis?.UNOVIS_ICON_FONT_FAMILY || 'FontAwesome'
 export const UNOVIS_FONT_WH_RATIO_DEFAULT: number = globalThis?.UNOVIS_FONT_W2H_RATIO_DEFAULT || 0.5
@@ -17,7 +17,7 @@ export const UNOVIS_TEXT_DEFAULT: UnovisText = globalThis?.UNOVIS_TEXT_DEFAULT |
   marginBottom: 0,
 }
 
-export const variables = injectGlobal`
+export const initStyles = (): void => injectGlobal`
   :root {
     label: vis-root-styles;
     --vis-font-family: Inter, Arial, "Helvetica Neue", Helvetica, sans-serif;

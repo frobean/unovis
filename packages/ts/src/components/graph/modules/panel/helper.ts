@@ -66,7 +66,7 @@ export function setPanelBBox<N extends GraphInputNode, L extends GraphInputLink>
   nodeSizeAccessor: NumericAccessor<N>,
   nodeDisabledAccessor: BooleanAccessor<N>
 ): void {
-  const selection = panelNodes.select(`.${nodeSelectors.node}`)
+  const selection = panelNodes.select(`.${nodeSelectors.node()}`)
   if (selection.empty()) return
 
   const labelApprxHeight = 40

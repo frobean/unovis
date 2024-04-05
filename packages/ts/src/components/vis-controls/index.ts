@@ -26,10 +26,10 @@ export class VisControls {
 
     this.div = select(this._container)
       .append('div')
-      .attr('class', s.root)
+      .attr('class', s.root())
     this.element = this.div.node()
     this._items = this.div.append('div')
-      .attr('class', s.items)
+      .attr('class', s.items())
 
     if (config) this.update(config)
   }
@@ -42,26 +42,26 @@ export class VisControls {
   render (): void {
     const { config: { items, orientation } } = this
     this._items
-      .classed(s.horizontalItems, orientation === VisControlsOrientation.Horizontal)
-    const controlItems = this._items.selectAll<HTMLDivElement, VisControlItemInterface>(`.${s.item}`)
+      .classed(s.horizontalItems(), orientation === VisControlsOrientation.Horizontal)
+    const controlItems = this._items.selectAll<HTMLDivElement, VisControlItemInterface>(`.${s.item()}`)
       .data(items)
 
     const controlItemsEnter = controlItems.enter()
       .append('div')
-      .attr('class', s.item)
+      .attr('class', s.item())
       .on('click', this._onItemClick.bind(this))
 
     controlItemsEnter.append('button')
-      .attr('class', s.itemButton)
+      .attr('class', s.itemButton())
 
     const controlItemsMerged = controlItemsEnter.merge(controlItems)
     controlItemsMerged
-      .classed(s.borderLeft, d => d.borderLeft)
-      .classed(s.borderTop, d => d.borderTop)
-      .classed(s.borderRight, d => d.borderRight)
-      .classed(s.borderBottom, d => d.borderBottom)
-      .classed(s.disabled, d => d.disabled)
-    controlItemsMerged.select(`.${s.itemButton}`)
+      .classed(s.borderLeft(), d => d.borderLeft)
+      .classed(s.borderTop(), d => d.borderTop)
+      .classed(s.borderRight(), d => d.borderRight)
+      .classed(s.borderBottom(), d => d.borderBottom)
+      .classed(s.disabled(), d => d.disabled)
+    controlItemsMerged.select(`.${s.itemButton()}`)
       .html(item => item.icon)
 
     controlItems.exit().remove()

@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: stacked-bar-component;
 `
 
-export const globalStyles = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-stacked-bar-cursor: default;
     --vis-stacked-bar-fill-color: var(--vis-color-main);
     --vis-stacked-bar-stroke-color: none;
@@ -17,12 +17,12 @@ export const globalStyles = injectGlobal`
     --vis-dark-stacked-bar-stroke-color: none;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-stacked-bar-stroke-color: var(--vis-dark-stacked-bar-stroke-color);
   }
-`
+`)
 
-export const bar = css`
+export const bar = (): string => css`
   label: bar;
   fill: var(--vis-stacked-bar-fill-color);
   stroke: var(--vis-stacked-bar-stroke-color);
@@ -35,10 +35,10 @@ export const bar = css`
   }
 `
 
-export const barGroup = css`
+export const barGroup = (): string => css`
   label: barGroup;
 `
 
-export const barGroupExit = css`
+export const barGroupExit = (): string => css`
   label: barGroupExit;
 `

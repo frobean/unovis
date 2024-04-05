@@ -29,7 +29,7 @@ export class FreeBrush<Datum> extends XYComponentCore<Datum, FreeBrushConfigInte
 
     this.brush = this.g
       .append('g')
-      .attr('class', s.brush)
+      .attr('class', s.brush())
   }
 
   _render (customDuration?: number): void {
@@ -38,7 +38,7 @@ export class FreeBrush<Datum> extends XYComponentCore<Datum, FreeBrushConfigInte
     const yScale = this.yScale
     const duration = isNumber(customDuration) ? customDuration : config.duration
 
-    if (this._firstRender) this.brush.classed(s.hide, this._firstRender && config.autoHide)
+    if (this._firstRender) this.brush.classed(s.hide(), this._firstRender && config.autoHide)
 
     // Sometimes Brush stops emitting 'start' and 'end' events. Possible explanation:
     // "... mouseup will only fire when performed within the browser, which can lead to losing track of the button state."
@@ -190,7 +190,7 @@ export class FreeBrush<Datum> extends XYComponentCore<Datum, FreeBrushConfigInte
     const { config } = this
     const userDriven = !!event?.sourceEvent
     this._onBrush(event)
-    if (config.autoHide && userDriven) this.brush.classed(s.hide, false)
+    if (config.autoHide && userDriven) this.brush.classed(s.hide(), false)
     if (!this._firstRender) config.onBrushStart?.(config.selection, event, userDriven)
   }
 
@@ -205,7 +205,7 @@ export class FreeBrush<Datum> extends XYComponentCore<Datum, FreeBrushConfigInte
     const { config } = this
 
     this._onBrush(event)
-    if (config.autoHide) this.brush.classed(s.hide, true)
+    if (config.autoHide) this.brush.classed(s.hide(), true)
     if (!this._firstRender) config.onBrushEnd?.(config.selection, event, !!event?.sourceEvent)
   }
 }

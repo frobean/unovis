@@ -53,15 +53,15 @@ export class Sankey<
   private _highlightTimeoutId: ReturnType<typeof setTimeout> | null = null
   private _highlightActive = false
   events = {
-    [Sankey.selectors.nodeGroup]: {
+    [Sankey.selectors.nodeGroup()]: {
       mouseenter: this._onNodeMouseOver.bind(this),
       mouseleave: this._onNodeMouseOut.bind(this),
     },
-    [Sankey.selectors.node]: {
+    [Sankey.selectors.node()]: {
       mouseenter: this._onNodeRectMouseOver.bind(this),
       mouseleave: this._onNodeRectMouseOut.bind(this),
     },
-    [Sankey.selectors.link]: {
+    [Sankey.selectors.link()]: {
       mouseenter: this._onLinkMouseOver.bind(this),
       mouseleave: this._onLinkMouseOut.bind(this),
     },
@@ -70,9 +70,9 @@ export class Sankey<
   constructor (config?: SankeyConfigInterface<N, L>) {
     super()
     if (config) this.setConfig(config)
-    this._backgroundRect = this.g.append('rect').attr('class', s.background)
-    this._linksGroup = this.g.append('g').attr('class', s.links)
-    this._nodesGroup = this.g.append('g').attr('class', s.nodes)
+    this._backgroundRect = this.g.append('rect').attr('class', s.background())
+    this._linksGroup = this.g.append('g').attr('class', s.links())
+    this._nodesGroup = this.g.append('g').attr('class', s.nodes())
   }
 
   get bleed (): Spacing {
@@ -144,8 +144,8 @@ export class Sankey<
       (nodes.length === 1 && !config.showSingleNode) ||
       (nodes.length > 1 && links.length === 0)
     ) {
-      this._linksGroup.selectAll<SVGGElement, SankeyLink<N, L>>(`.${s.link}`).call(removeLinks, duration)
-      this._nodesGroup.selectAll<SVGGElement, SankeyNode<N, L>>(`.${s.nodeGroup}`).call(removeNodes, config, duration)
+      this._linksGroup.selectAll<SVGGElement, SankeyLink<N, L>>(`.${s.link()}`).call(removeLinks, duration)
+      this._nodesGroup.selectAll<SVGGElement, SankeyNode<N, L>>(`.${s.nodeGroup()}`).call(removeNodes, config, duration)
     }
 
     // Prepare Layout
@@ -153,9 +153,9 @@ export class Sankey<
 
     // Links
     smartTransition(this._linksGroup, duration).attr('transform', `translate(${bleed.left},${bleed.top})`)
-    const linkSelection = this._linksGroup.selectAll<SVGGElement, SankeyLink<N, L>>(`.${s.link}`)
+    const linkSelection = this._linksGroup.selectAll<SVGGElement, SankeyLink<N, L>>(`.${s.link()}`)
       .data(links, (d, i) => config.id(d, i) ?? i)
-    const linkSelectionEnter = linkSelection.enter().append('g').attr('class', s.link)
+    const linkSelectionEnter = linkSelection.enter().append('g').attr('class', s.link())
     linkSelectionEnter.call(createLinks)
     linkSelection.merge(linkSelectionEnter).call(updateLinks, config, duration)
     linkSelection.exit<SankeyLink<N, L>>().call(removeLinks)
@@ -163,13 +163,13 @@ export class Sankey<
     // Nodes
     smartTransition(this._nodesGroup, duration).attr('transform', `translate(${bleed.left},${bleed.top})`)
 
-    const nodeSelection = this._nodesGroup.selectAll<SVGGElement, SankeyNode<N, L>>(`.${s.nodeGroup}`)
+    const nodeSelection = this._nodesGroup.selectAll<SVGGElement, SankeyNode<N, L>>(`.${s.nodeGroup()}`)
       .data(nodes, (d, i) => config.id(d, i) ?? i)
-    const nodeSelectionEnter = nodeSelection.enter().append('g').attr('class', s.nodeGroup)
+    const nodeSelectionEnter = nodeSelection.enter().append('g').attr('class', s.nodeGroup())
     nodeSelectionEnter.call(createNodes, this.config, this._width, bleed)
     nodeSelection.merge(nodeSelectionEnter).call(updateNodes, config, this._width, bleed, this._hasLinks(), duration)
     nodeSelection.exit<SankeyNode<N, L>>()
-      .attr('class', s.nodeExit)
+      .attr('class', s.nodeExit())
       .call(removeNodes, config, duration)
 
     // Background

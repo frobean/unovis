@@ -58,14 +58,14 @@ export class TopoJSONMap<
 
   private _featureCollection: GeoJSON.FeatureCollection
   private _zoomBehavior: ZoomBehavior<SVGGElement, unknown> = zoom()
-  private _backgroundRect = this.g.append('rect').attr('class', s.background)
-  private _featuresGroup = this.g.append('g').attr('class', s.features)
-  private _linksGroup = this.g.append('g').attr('class', s.links)
-  private _pointsGroup = this.g.append('g').attr('class', s.points)
+  private _backgroundRect = this.g.append('rect').attr('class', s.background())
+  private _featuresGroup = this.g.append('g').attr('class', s.features())
+  private _linksGroup = this.g.append('g').attr('class', s.links())
+  private _pointsGroup = this.g.append('g').attr('class', s.points())
 
   events = {
-    [TopoJSONMap.selectors.point]: {},
-    [TopoJSONMap.selectors.feature]: {},
+    [TopoJSONMap.selectors.point()]: {},
+    [TopoJSONMap.selectors.feature()]: {},
   }
 
   constructor (config?: TopoJSONMapConfigInterface<AreaDatum, PointDatum, LinkDatum>, data?: MapData<AreaDatum, PointDatum, LinkDatum>) {
@@ -196,10 +196,10 @@ export class TopoJSONMap<
     })
 
     const features = this._featuresGroup
-      .selectAll<SVGPathElement, unknown>(`.${s.feature}`)
+      .selectAll<SVGPathElement, unknown>(`.${s.feature()}`)
       .data(featureData)
 
-    const featuresEnter = features.enter().append('path').attr('class', s.feature)
+    const featuresEnter = features.enter().append('path').attr('class', s.feature())
     smartTransition(featuresEnter.merge(features), duration)
       .attr('d', this._path)
       .style('fill', (d, i) => d.data ? getColor(d.data, config.areaColor, i) : null)
@@ -212,10 +212,10 @@ export class TopoJSONMap<
     const links = datamodel.links
 
     const edges = this._linksGroup
-      .selectAll<SVGPathElement, MapLink<PointDatum, LinkDatum>>(`.${s.link}`)
+      .selectAll<SVGPathElement, MapLink<PointDatum, LinkDatum>>(`.${s.link()}`)
       .data(links, (d, i) => getString(d, config.linkId, i))
 
-    const edgesEnter = edges.enter().append('path').attr('class', s.link)
+    const edgesEnter = edges.enter().append('path').attr('class', s.link())
       .style('stroke-width', 0)
 
     smartTransition(edgesEnter.merge(edges), duration)
@@ -235,22 +235,22 @@ export class TopoJSONMap<
     const pointData = datamodel.points
 
     const points = this._pointsGroup
-      .selectAll<SVGGElement, PointDatum>(`.${s.point}`)
+      .selectAll<SVGGElement, PointDatum>(`.${s.point()}`)
       .data(pointData, (d, i) => getString(d, config.pointId, i))
 
     // Enter
-    const pointsEnter = points.enter().append('g').attr('class', s.point)
+    const pointsEnter = points.enter().append('g').attr('class', s.point())
       .attr('transform', d => {
         const pos = this._projection(getLonLat(d, config.longitude, config.latitude))
         return `translate(${pos[0]},${pos[1]})`
       })
 
-    pointsEnter.append('circle').attr('class', s.pointCircle)
+    pointsEnter.append('circle').attr('class', s.pointCircle())
       .attr('r', 0)
       .style('fill', (d, i) => getColor(d, config.pointColor, i))
       .style('stroke-width', d => getNumber(d, config.pointStrokeWidth))
 
-    pointsEnter.append('text').attr('class', s.pointLabel)
+    pointsEnter.append('text').attr('class', s.pointLabel())
       .style('opacity', 0)
 
     // Update
@@ -262,13 +262,13 @@ export class TopoJSONMap<
       })
       .style('cursor', d => getString(d, config.pointCursor))
 
-    smartTransition(pointsMerged.select(`.${s.pointCircle}`), duration)
+    smartTransition(pointsMerged.select(`.${s.pointCircle()}`), duration)
       .attr('r', d => getNumber(d, config.pointRadius) / this._currentZoomLevel)
       .style('fill', (d, i) => getColor(d, config.pointColor, i))
       .style('stroke', (d, i) => getColor(d, config.pointColor, i))
       .style('stroke-width', d => getNumber(d, config.pointStrokeWidth) / this._currentZoomLevel)
 
-    const pointLabelsMerged = pointsMerged.select(`.${s.pointLabel}`)
+    const pointLabelsMerged = pointsMerged.select(`.${s.pointLabel()}`)
     pointLabelsMerged
       .text(d => getString(d, config.pointLabel) ?? '')
       .style('font-size', d => {
@@ -307,7 +307,7 @@ export class TopoJSONMap<
 
     // Heatmap
     this._pointsGroup.style('filter', (config.heatmapMode && this._currentZoomLevel < config.heatmapModeZoomLevelThreshold) ? 'url(#heatmapFilter)' : null)
-    this._pointsGroup.selectAll(`.${s.pointLabel}`).style('display', (config.heatmapMode && (this._currentZoomLevel < config.heatmapModeZoomLevelThreshold)) ? 'none' : null)
+    this._pointsGroup.selectAll(`.${s.pointLabel()}`).style('display', (config.heatmapMode && (this._currentZoomLevel < config.heatmapModeZoomLevelThreshold)) ? 'none' : null)
   }
 
   _fitToPoints (points?: PointDatum[], pad = 0.1): void {

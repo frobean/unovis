@@ -46,25 +46,25 @@ export class Graph<
   GraphConfigInterface<N, L>
   > {
   static selectors = {
-    root: generalSelectors.root,
-    background: generalSelectors.background,
-    node: nodeSelectors.gNode,
-    nodeShape: nodeSelectors.node,
-    nodeGauge: nodeSelectors.nodeGauge,
-    nodeSideLabel: nodeSelectors.sideLabelGroup,
-    nodeLabel: nodeSelectors.label,
-    dimmedNode: nodeSelectors.greyedOutNode,
-    link: linkSelectors.gLink,
-    linkLine: linkSelectors.link,
-    dimmedLink: linkSelectors.greyedOutLink,
-    panel: panelSelectors.gPanel,
-    panelRect: panelSelectors.panel,
-    panelSelection: panelSelectors.panelSelection,
-    panelLabel: panelSelectors.label,
-    panelLabelText: panelSelectors.labelText,
-    panelSideIcon: panelSelectors.sideIconGroup,
-    panelSideIconShape: panelSelectors.sideIconShape,
-    panelSideIconSymbol: panelSelectors.sideIconSymbol,
+    root: (): string => generalSelectors.root(),
+    background: (): string => generalSelectors.background(),
+    node: (): string => nodeSelectors.gNode(),
+    nodeShape: (): string => nodeSelectors.node(),
+    nodeGauge: (): string => nodeSelectors.nodeGauge(),
+    nodeSideLabel: (): string => nodeSelectors.sideLabelGroup(),
+    nodeLabel: (): string => nodeSelectors.label(),
+    dimmedNode: (): string => nodeSelectors.greyedOutNode(),
+    link: (): string => linkSelectors.gLink(),
+    linkLine: (): string => linkSelectors.link(),
+    dimmedLink: (): string => linkSelectors.greyedOutLink(),
+    panel: (): string => panelSelectors.gPanel(),
+    panelRect: (): string => panelSelectors.panel(),
+    panelSelection: (): string => panelSelectors.panelSelection(),
+    panelLabel: (): string => panelSelectors.label(),
+    panelLabelText: (): string => panelSelectors.labelText(),
+    panelSideIcon: (): string => panelSelectors.sideIconGroup(),
+    panelSideIconShape: (): string => panelSelectors.sideIconShape(),
+    panelSideIconSymbol: (): string => panelSelectors.sideIconSymbol(),
   }
 
   static nodeSelectors = nodeSelectors
@@ -100,15 +100,15 @@ export class Graph<
   private _isDragging = false
 
   events = {
-    [Graph.selectors.background]: {
+    [Graph.selectors.background()]: {
       click: this._onBackgroundClick.bind(this),
     },
-    [Graph.selectors.node]: {
+    [Graph.selectors.node()]: {
       click: this._onNodeClick.bind(this),
       mouseover: this._onNodeMouseOver.bind(this),
       mouseout: this._onNodeMouseOut.bind(this),
     },
-    [Graph.selectors.link]: {
+    [Graph.selectors.link()]: {
       click: this._onLinkClick.bind(this),
       mouseover: this._onLinkMouseOver.bind(this),
       mouseout: this._onLinkMouseOut.bind(this),
@@ -127,16 +127,16 @@ export class Graph<
     super()
     if (config) this.setConfig(config)
 
-    this._backgroundRect = this.g.append('rect').attr('class', generalSelectors.background)
-    this._graphGroup = this.g.append('g').attr('class', generalSelectors.graphGroup)
+    this._backgroundRect = this.g.append('rect').attr('class', generalSelectors.background())
+    this._graphGroup = this.g.append('g').attr('class', generalSelectors.graphGroup())
 
     this._zoomBehavior = zoom<SVGGElement, unknown>()
       .scaleExtent(this.config.zoomScaleExtent)
       .on('zoom', (e: D3ZoomEvent<SVGGElement, unknown>) => this._onZoom(e.transform, e))
 
-    this._panelsGroup = this._graphGroup.append('g').attr('class', panelSelectors.panels)
-    this._linksGroup = this._graphGroup.append('g').attr('class', linkSelectors.links)
-    this._nodesGroup = this._graphGroup.append('g').attr('class', nodeSelectors.nodes)
+    this._panelsGroup = this._graphGroup.append('g').attr('class', panelSelectors.panels())
+    this._linksGroup = this._graphGroup.append('g').attr('class', linkSelectors.links())
+    this._nodesGroup = this._graphGroup.append('g').attr('class', nodeSelectors.nodes())
 
     this._defs = this._graphGroup.append('defs')
 
@@ -259,11 +259,11 @@ export class Graph<
 
     const nodes: GraphNode<N, L>[] = datamodel.nodes
     const nodeGroups = this._nodesGroup
-      .selectAll<SVGGElement, GraphNode<N, L>>(`.${nodeSelectors.gNode}:not(.${nodeSelectors.gNodeExit})`)
+      .selectAll<SVGGElement, GraphNode<N, L>>(`.${nodeSelectors.gNode()}:not(.${nodeSelectors.gNodeExit()})`)
       .data(nodes, d => String(d._id))
 
     const nodeGroupsEnter = nodeGroups.enter().append('g')
-      .attr('class', nodeSelectors.gNode)
+      .attr('class', nodeSelectors.gNode())
       .call(createNodes, config, duration)
 
     const nodeGroupsMerged = nodeGroups.merge(nodeGroupsEnter)
@@ -273,7 +273,7 @@ export class Graph<
 
     const nodesGroupExit = nodeGroups.exit<GraphNode<N, L>>()
     nodesGroupExit
-      .classed(nodeSelectors.gNodeExit, true)
+      .classed(nodeSelectors.gNodeExit(), true)
       .call(removeNodes, config, duration)
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -293,11 +293,11 @@ export class Graph<
     const { config, datamodel: { links } } = this
 
     const linkGroups = this._linksGroup
-      .selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink}`)
+      .selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink()}`)
       .data(links, (d: GraphLink<N, L>) => String(d._id))
 
     const linkGroupsEnter = linkGroups.enter().append('g')
-      .attr('class', linkSelectors.gLink)
+      .attr('class', linkSelectors.gLink())
       .call(createLinks, config, duration)
 
     const linkGroupsMerged = linkGroups.merge(linkGroupsEnter)
@@ -305,7 +305,7 @@ export class Graph<
 
     const linkGroupsExit = linkGroups.exit<GraphLink<N, L>>()
     linkGroupsExit
-      .attr('class', linkSelectors.gLinkExit)
+      .attr('class', linkSelectors.gLinkExit())
       .call(removeLinks, config, duration)
   }
 
@@ -327,14 +327,14 @@ export class Graph<
     updatePanelBBoxSize(selection, this._panels, config)
     const panelData = this._panels.filter(p => p._numNodes)
     const panelGroup = this._panelsGroup
-      .selectAll<SVGGElement, GraphPanel>(`.${panelSelectors.gPanel}`)
+      .selectAll<SVGGElement, GraphPanel>(`.${panelSelectors.gPanel()}`)
       .data(panelData, p => p.label)
 
     const panelGroupExit = panelGroup.exit<GraphPanel<N, L>>()
     panelGroupExit.call(removePanels, config, duration)
 
     const panelGroupEnter = panelGroup.enter().append('g')
-      .attr('class', panelSelectors.gPanel)
+      .attr('class', panelSelectors.gPanel())
       .call(createPanels, selection)
     const panelGroupMerged = panelGroup.merge(panelGroupEnter)
 
@@ -588,7 +588,7 @@ export class Graph<
     if (!hasLinksWithFlow) return
 
     const t = (elapsed % linkFlowAnimDuration) / linkFlowAnimDuration
-    const linkElements = this._linksGroup.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink}`)
+    const linkElements = this._linksGroup.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink()}`)
 
     const linksToAnimate = linkElements.filter(d => !d._state.greyout)
     linksToAnimate.each(d => { d._state.flowAnimTime = t })
@@ -621,14 +621,14 @@ export class Graph<
       else this._isAutoFitDisabled = false
     }
 
-    this._nodesGroup.selectAll<SVGGElement, GraphNode<N, L>>(`.${nodeSelectors.gNode}`)
+    this._nodesGroup.selectAll<SVGGElement, GraphNode<N, L>>(`.${nodeSelectors.gNode()}`)
       .call(
         (nodes.length > config.zoomThrottledUpdateNodeThreshold ? zoomNodesThrottled : zoomNodes) as typeof zoomNodes,
         config,
         this._scale
       )
 
-    this._linksGroup.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink}`)
+    this._linksGroup.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink()}`)
       .call(
         (nodes.length > config.zoomThrottledUpdateNodeThreshold ? zoomLinksThrottled : zoomLinks) as typeof zoomLinks,
         config,
@@ -685,11 +685,11 @@ export class Graph<
     if (d._state.fy === d.y) delete d._state.fy
 
     // Update affected DOM elements
-    const nodeSelection = this._nodesGroup.selectAll<SVGGElement, GraphNode<N, L>>(`.${nodeSelectors.gNode}`)
+    const nodeSelection = this._nodesGroup.selectAll<SVGGElement, GraphNode<N, L>>(`.${nodeSelectors.gNode()}`)
     const nodeToUpdate = nodeSelection.filter((n: GraphNode<N, L>) => n._id === d._id)
     nodeToUpdate.call(updateNodes, config, 0, scale)
 
-    const linkSelection = this._linksGroup.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink}`)
+    const linkSelection = this._linksGroup.selectAll<SVGGElement, GraphLink<N, L>>(`.${linkSelectors.gLink()}`)
     const linksToUpdate = linkSelection.filter((l: L) => {
       const source = l.source as GraphNode<N, L>
       const target = l.target as GraphNode<N, L>

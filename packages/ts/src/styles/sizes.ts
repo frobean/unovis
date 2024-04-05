@@ -1,6 +1,6 @@
-import { css } from '@emotion/css'
+import { css } from '../emotion/css'
 
-export const styleLargeSize = css`
+export const styleLargeSize = (): string => css`
   label: large-size;
 
   /* Axis */
@@ -57,7 +57,7 @@ export const styleLargeSize = css`
   }
   `
 
-export const styleExtraLargeSize = css`
+export const styleExtraLargeSize = (): string => css`
   label: extra-large-size;
 
   /* Axis */

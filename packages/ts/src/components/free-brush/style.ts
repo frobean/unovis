@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: free-brush-component;
 `
 
-export const variables = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-free-brush-selection-fill-color: #0b1640;
     --vis-free-brush-selection-fill-opacity: 0.4;
     --vis-free-brush-selection-stroke-color: #acb2b9;
@@ -17,14 +17,14 @@ export const variables = injectGlobal`
     --vis-dark-free-brush-handle-fill-color: #6d778c;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-free-brush-selection-fill-color: var(--vis-dark-free-brush-selection-fill-color);
     --vis-free-brush-selection-stroke-color: var(--vis-dark-free-brush-selection-stroke-color);
     --vis-free-brush-handle-fill-color: var(--vis-dark-free-brush-selection-fill-color);
   }
-`
+`)
 
-export const brush = css`
+export const brush = (): string => css`
   label: brush;
   fill: none;
   stroke: none;
@@ -43,7 +43,7 @@ export const brush = css`
   }
 `
 
-export const hide = css`
+export const hide = (): string => css`
   .selection, .handle {
     display: none;
   }

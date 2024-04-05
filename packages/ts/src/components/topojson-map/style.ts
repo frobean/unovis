@@ -1,6 +1,6 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: topojson-map-component;
 
   &.draggable {
@@ -12,8 +12,8 @@ export const root = css`
   }
 `
 
-export const variables = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-map-feature-color: #dce3eb;
     --vis-map-boundary-color: #ffffff;
 
@@ -32,41 +32,41 @@ export const variables = injectGlobal`
     --vis-dark-map-point-label-text-color-light:#5b5f6d;
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-map-feature-color: var(--vis-dark-map-feature-color);
     --vis-map-boundary-color: var(--vis-dark-map-boundary-color);
     --vis-map-point-label-text-color-dark: var(--vis-dark-map-point-label-text-color-dark);
     --vis-map-point-label-text-color-light: var(--vis-dark-map-point-label-text-color-light);
   }
-`
+`)
 
-export const features = css`
+export const features = (): string => css`
   label: features;
 `
 
-export const feature = css`
+export const feature = (): string => css`
   label: feature;
   fill: var(--vis-map-feature-color);
   stroke: var(--vis-map-boundary-color);
   stroke-opacity: 0.5;
 `
 
-export const background = css`
+export const background = (): string => css`
   label: background;
 
   fill-opacity: 0;
   pointer-events: all;
 `
 
-export const points = css`
+export const points = (): string => css`
   label: points;
 `
 
-export const point = css`
+export const point = (): string => css`
   label: point;
 `
 
-export const pointCircle = css`
+export const pointCircle = (): string => css`
   label: point;
 
   stroke-opacity: 0.4;
@@ -77,7 +77,7 @@ export const pointCircle = css`
   }
 `
 
-export const pointLabel = css`
+export const pointLabel = (): string => css`
   label: label;
 
   text-anchor: middle;
@@ -90,11 +90,11 @@ export const pointLabel = css`
   fill: var(--vis-map-point-label-text-color-dark);
 `
 
-export const links = css`
+export const links = (): string => css`
   label: links;
 `
 
-export const link = css`
+export const link = (): string => css`
   label: link;
 
   fill: none;

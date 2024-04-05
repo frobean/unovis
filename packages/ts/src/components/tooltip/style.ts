@@ -1,11 +1,11 @@
-import { css, injectGlobal } from '@emotion/css'
+import { addInitFunction, css, injectGlobal } from '../../emotion/css'
 
-export const root = css`
+export const root = (): string => css`
   label: tooltip;
 `
 
-export const variables = injectGlobal`
-  :root {
+addInitFunction((): void => injectGlobal`
+  :root,:host {
     --vis-tooltip-background-color: rgba(255, 255, 255, 0.95);
     --vis-tooltip-border-color: #e5e9f7;
     --vis-tooltip-text-color: #000;
@@ -19,7 +19,7 @@ export const variables = injectGlobal`
     --vis-dark-tooltip-shadow-color: rgba(0,0,0, 0.95);
   }
 
-  body.theme-dark ${`.${root}`} {
+  body.theme-dark ${`.${root()}`} {
     --vis-tooltip-background-color: var(--vis-dark-tooltip-background-color);
     --vis-tooltip-text-color: var(--vis-dark-tooltip-text-color);
     --vis-tooltip-border-color: var(--vis-dark-tooltip-border-color);
@@ -32,9 +32,9 @@ export const variables = injectGlobal`
     --vis-tooltip-border-color: var(--vis-color-grey);
     --vis-tooltip-shadow-color: rgba(0,0,0, 0.95);
   }
-`
+`)
 
-export const tooltip = css`
+export const tooltip = (): string => css`
   label: tooltip;
   display: inline-block;
   left: 0;
@@ -59,15 +59,15 @@ export const tooltip = css`
   backdrop-filter: var(--vis-tooltip-backdrop-filter);
 `
 
-export const positionFixed = css`
+export const positionFixed = (): string => css`
   bottom: unset;
   position: fixed;
 `
 
-export const show = css`
+export const show = (): string => css`
   opacity: 1;
 `
 
-export const hidden = css`
+export const hidden = (): string => css`
   display: none;
 `
